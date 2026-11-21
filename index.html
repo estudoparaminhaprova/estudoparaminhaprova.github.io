@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%231c3fb8' stroke='%23f6c544' stroke-width='5'/%3E%3Ctext x='32' y='42' font-size='28' font-family='Arial' font-weight='900' text-anchor='middle' fill='%23fff'%3EM%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="O Milhão do Processo">
+<meta property="og:description" content="Quiz show de revisão de Processo de Software: 80 perguntas, apresentador, música e explicação de todas as alternativas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://estudoparaminhaprova.github.io/">
+<meta name="theme-color" content="#070b2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Milhão do Processo">
+<meta name="description" content="Quiz show de revisão de Processo de Software com apresentador, música e explicação de todas as alternativas.">
+<title>O Milhão do Processo — Quiz de Processo de Software</title>
+<style>
+:root{
+  --navy:#070b2a; --navy2:#101848; --roxo:#2a0f5c; --ouro:#f6c544; --ouro2:#ffdf7e;
+  --azul:#1c3fb8; --azul2:#2f6bff; --verde:#1fbf6a; --vermelho:#e0384b; --texto:#f3f5ff; --suave:#b9c2ef;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--texto);
+  background:radial-gradient(ellipse at 50% 0%, #3b1a8a 0%, var(--roxo) 30%, var(--navy) 75%);
+  min-height:100vh;overflow-x:hidden;
+}
+/* luzes de palco */
+.luzes{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.luzes span{position:absolute;top:-30%;width:40vw;height:160vh;opacity:.13;
+  background:linear-gradient(180deg,#fff 0%,transparent 70%);filter:blur(18px);transform-origin:top center}
+.luzes span:nth-child(1){left:5%;animation:balanca 7s ease-in-out infinite}
+.luzes span:nth-child(2){left:35%;animation:balanca 9s ease-in-out infinite reverse;opacity:.09}
+.luzes span:nth-child(3){left:65%;animation:balanca 8s ease-in-out infinite}
+@keyframes balanca{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}
+.estrelas{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(2px 2px at 10% 20%,#fff8,transparent),radial-gradient(1.5px 1.5px at 80% 30%,#fff6,transparent),
+  radial-gradient(2px 2px at 30% 80%,#fff5,transparent),radial-gradient(1.5px 1.5px at 60% 60%,#fff7,transparent),
+  radial-gradient(1.5px 1.5px at 90% 85%,#fff5,transparent),radial-gradient(2px 2px at 50% 10%,#fff6,transparent);
+  animation:pisca 4s ease-in-out infinite}
+@keyframes pisca{50%{opacity:.5}}
+.app{position:relative;z-index:1;max-width:1250px;margin:0 auto;padding:16px}
+.tela{display:none}
+.tela.ativa{display:block;animation:entra .5s ease}
+@keyframes entra{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* logo */
+.logo{text-align:center;margin:10px auto 6px}
+.logo .circulo{width:170px;height:170px;margin:0 auto;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#4f7dff,#14248a 60%,#070b2a);
+  border:6px solid var(--ouro);box-shadow:0 0 40px #f6c54488,inset 0 0 30px #0008;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;animation:gira 6s ease-in-out infinite}
+@keyframes gira{50%{box-shadow:0 0 70px #f6c544cc,inset 0 0 30px #0008}}
+.logo .o{font-size:20px;font-weight:700;letter-spacing:2px;color:var(--ouro2)}
+.logo .milhao{font-size:34px;font-weight:900;line-height:1;color:#fff;text-shadow:0 3px 0 #b8860b,0 0 18px #ffd86b}
+.logo .do{font-size:15px;font-weight:700;letter-spacing:3px;color:var(--ouro2);margin-top:4px}
+.titulo{font-size:clamp(26px,4vw,44px);font-weight:900;text-align:center;margin:14px 0 2px;
+  background:linear-gradient(180deg,#fff6c9,var(--ouro) 60%,#b8860b);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 30px #f6c54433}
+.sub{text-align:center;color:var(--suave);margin:0 0 18px}
+
+.cartao{background:linear-gradient(180deg,#141f5ecc,#0b1240ee);border:1.5px solid #3c4fa8;border-radius:18px;padding:18px;box-shadow:0 10px 30px #0006}
+.grade-inicio{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:8px}
+@media (max-width:860px){.grade-inicio{grid-template-columns:1fr}}
+.botao{appearance:none;border:2px solid var(--ouro);background:linear-gradient(180deg,#2747c9,#13258a);color:#fff;
+  font-weight:800;font-size:17px;padding:14px 18px;border-radius:40px;cursor:pointer;transition:.15s;width:100%;margin:6px 0;
+  box-shadow:0 4px 0 #8a6a12,0 0 18px #2f6bff55}
+.botao:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.botao:active{transform:translateY(2px);box-shadow:0 1px 0 #8a6a12}
+.botao.ouro{background:linear-gradient(180deg,#ffe27a,#e2a51c);color:#2a1700;border-color:#fff3b0;box-shadow:0 4px 0 #8a5a00,0 0 26px #f6c54488}
+.botao.peq{font-size:14px;padding:9px 14px;width:auto;margin:4px}
+.botao.ghost{background:transparent;border-color:#5b6cc4;box-shadow:none}
+.botao:disabled{opacity:.4;cursor:not-allowed;transform:none}
+h3{margin:4px 0 10px;color:var(--ouro2)}
+.regras li{margin:5px 0;color:#dfe4ff}
+.cfg label{display:block;margin:10px 0 4px;color:var(--suave);font-size:14px}
+.cfg select,.cfg input[type=range]{width:100%}
+.cfg select{background:#0b1240;color:#fff;border:1px solid #3c4fa8;border-radius:8px;padding:8px}
+.linha{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.aviso{font-size:13px;color:#ffd38a;margin-top:8px}
+
+/* jogo */
+.jogo{display:grid;grid-template-columns:1fr 250px;gap:16px}
+@media (max-width:900px){.jogo{grid-template-columns:1fr}.escada{order:-1}}
+.topo{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.ajudas{display:flex;gap:8px;flex-wrap:wrap}
+.ajuda{border:2px solid var(--ouro);background:radial-gradient(circle at 40% 30%,#3a64ff,#10206e);color:#fff;border-radius:14px;
+  padding:7px 12px;cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;transition:.15s}
+.ajuda:hover{filter:brightness(1.2)}
+.ajuda:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.ajuda b{background:var(--ouro);color:#222;border-radius:10px;padding:0 6px;font-size:12px}
+.icones{display:flex;gap:6px}
+.icone{background:#0b1240;border:1px solid #3c4fa8;color:#fff;border-radius:10px;padding:7px 10px;cursor:pointer;font-size:13px}
+
+.palco{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.host{flex:0 0 96px;text-align:center}
+.host svg{width:96px;height:110px;filter:drop-shadow(0 0 14px #f6c54455)}
+.host .nome{font-size:12px;color:var(--ouro2);font-weight:700}
+.boca{transition:.08s}
+.falando .boca{animation:fala .22s infinite alternate}
+@keyframes fala{from{transform:scaleY(.3)}to{transform:scaleY(1.2)}}
+.balao{flex:1;background:#ffffff12;border:1.5px solid #ffffff2a;border-radius:16px;padding:12px 14px;min-height:64px;font-size:16px;line-height:1.45;position:relative}
+.balao:before{content:"";position:absolute;left:-10px;top:22px;border:10px solid transparent;border-right-color:#ffffff2a;border-left:0}
+
+.pergunta{background:linear-gradient(180deg,#1b2d93,#0c165c);border:3px solid var(--ouro);border-radius:22px;padding:18px 22px;
+  font-size:clamp(18px,2.2vw,24px);font-weight:700;text-align:center;box-shadow:0 0 30px #2f6bff55,inset 0 0 20px #0006;margin-bottom:14px;position:relative}
+.pergunta .valor{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--ouro);color:#2a1700;font-size:14px;
+  font-weight:900;padding:3px 14px;border-radius:20px;white-space:nowrap}
+.alts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.alts{grid-template-columns:1fr}}
+.alt{display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;color:#fff;font-size:16px;font-weight:600;
+  background:linear-gradient(180deg,#203aa8,#0e1a66);border:2px solid #5c7bff;border-radius:40px;padding:12px 16px;min-height:62px;transition:.15s}
+.alt:hover:not(:disabled){border-color:var(--ouro);transform:scale(1.02);box-shadow:0 0 18px #f6c54466}
+.alt .num{flex:0 0 34px;height:34px;border-radius:50%;background:var(--ouro);color:#2a1700;font-weight:900;display:flex;align-items:center;justify-content:center}
+.alt.marcada{background:linear-gradient(180deg,#ffbf3a,#d98a00);color:#2a1700;border-color:#fff3b0;animation:pulsa .6s infinite alternate}
+.alt.marcada .num{background:#2a1700;color:var(--ouro)}
+@keyframes pulsa{to{box-shadow:0 0 28px #ffd86b}}
+.alt.certa{background:linear-gradient(180deg,#2fe083,#0d8c47);border-color:#b8ffd6;color:#fff;animation:acende .4s 4 alternate}
+.alt.errada{background:linear-gradient(180deg,#ff5a6b,#a3172a);border-color:#ffc2c9}
+.alt.eliminada{opacity:.15;pointer-events:none}
+.alt:disabled{cursor:default}
+@keyframes acende{to{box-shadow:0 0 34px #2fe083}}
+
+.placar3{display:flex;gap:10px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
+.placar3 div{background:#0b1240;border:1.5px solid #3c4fa8;border-radius:12px;padding:6px 14px;text-align:center;min-width:120px}
+.placar3 small{display:block;color:var(--suave);font-size:12px}
+.placar3 b{font-size:17px}
+.placar3 .e b{color:#ff8592}.placar3 .p b{color:var(--ouro2)}.placar3 .a b{color:#6dffb0}
+.acoes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+
+.escada{background:linear-gradient(180deg,#121b55ee,#080e38f2);border:2px solid #3c4fa8;border-radius:16px;padding:10px;align-self:start}
+.escada h4{margin:4px 0 8px;text-align:center;color:var(--ouro2)}
+.escada ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column-reverse}
+.escada li{display:flex;justify-content:space-between;padding:4px 10px;border-radius:8px;font-size:14px;color:#c9d1ff}
+.escada li .n{opacity:.6;width:26px}
+.escada li.feita{color:#6dffb0}
+.escada li.atual{background:var(--ouro);color:#2a1700;font-weight:900;box-shadow:0 0 14px #f6c54499}
+.escada li.marco{border-top:1px dashed #5c6cc4}
+.escada li.final{font-weight:900;color:var(--ouro2)}
+.progresso{height:10px;background:#0b1240;border-radius:6px;overflow:hidden;border:1px solid #3c4fa8;margin:6px 0}
+.progresso div{height:100%;background:linear-gradient(90deg,var(--azul2),var(--ouro));width:0;transition:.4s}
+
+/* explicação */
+.explica{margin-top:14px;display:none}
+.explica.mostrar{display:block;animation:entra .4s}
+.aula{background:#f6c5441a;border:1.5px solid #f6c54466;border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.aula b{color:var(--ouro2)}
+.op{display:flex;gap:10px;padding:10px 12px;border-radius:12px;margin:6px 0;background:#ffffff0d;border:1.5px solid transparent;transition:.2s}
+.op .marca{flex:0 0 28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.op.ok .marca{background:var(--verde)}.op.nok .marca{background:#5a2330;color:#ffb3bd}
+.op.lendo{border-color:var(--ouro);background:#f6c5441f;transform:scale(1.01)}
+.op .t{font-weight:700}
+.op .ex{color:#dfe4ff;font-size:15px;margin-top:2px}
+
+/* modais */
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.aberto{display:flex}
+.modal .cartao{max-width:560px;width:100%;text-align:center;animation:entra .3s}
+.cartas{display:flex;gap:12px;justify-content:center;margin:14px 0}
+.carta{width:90px;height:128px;border-radius:12px;cursor:pointer;perspective:600px;background:none;border:0;padding:0}
+.carta .in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.carta.virada .in{transform:rotateY(180deg)}
+.carta .f,.carta .v{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900}
+.carta .f{background:repeating-linear-gradient(45deg,#1c3fb8 0 8px,#13258a 8px 16px);border:3px solid var(--ouro)}
+.carta .v{background:#fff;color:#c0182c;transform:rotateY(180deg);border:3px solid var(--ouro);flex-direction:column;font-size:36px}
+.carta .v small{font-size:12px;color:#333}
+.univ{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.univ div{background:#0b1240;border:1.5px solid #3c4fa8;border-radius:12px;padding:10px}
+.univ .av{font-size:34px}
+.univ b{display:block;color:var(--ouro2)}
+.barras{display:flex;gap:14px;justify-content:center;align-items:flex-end;height:180px;margin:14px 0}
+.barras .b{width:54px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.barras .b i{display:block;width:100%;background:linear-gradient(180deg,var(--ouro),#c98a00);border-radius:6px 6px 0 0;height:0;transition:height 1.2s}
+.barras .b span{margin-top:6px;font-weight:900}
+.barras .b em{font-style:normal;font-size:13px;margin-bottom:4px}
+
+.fim .grande{font-size:clamp(34px,6vw,60px);font-weight:900;text-align:center;color:var(--ouro2);text-shadow:0 0 30px #f6c54488}
+.revisao .item{background:#ffffff0d;border-radius:12px;padding:10px 12px;margin:8px 0}
+.revisao .item b{color:var(--ouro2)}
+.confete{position:fixed;top:-20px;width:10px;height:16px;z-index:30;pointer-events:none;animation:cai linear forwards}
+@keyframes cai{to{transform:translateY(110vh) rotate(720deg)}}
+kbd{background:#0b1240;border:1px solid #3c4fa8;border-radius:5px;padding:1px 6px;font-size:12px}
+.rodape{text-align:center;color:#8f9ad6;font-size:12px;margin:18px 0 6px}
+
+/* ---- acréscimos v2 ---- */
+.modos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:600px){.modos{grid-template-columns:1fr}}
+.modos .botao{margin:0;padding:12px 8px;font-size:15px;line-height:1.2}
+.modos .botao small{display:block;font-weight:600;font-size:12px;opacity:.85;margin-top:3px}
+.treinos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+@media (max-width:600px){.treinos{grid-template-columns:1fr}}
+.treinos .botao{margin:0;font-size:14px;padding:11px 8px}
+.recorde{margin-top:10px;color:var(--ouro2);font-weight:700;text-align:center;min-height:20px}
+.diag{background:#0b1240;border:1.5px solid #3c4fa8;border-radius:12px;padding:10px 12px;margin-top:12px;font-size:14px}
+.diag-linha{margin:3px 0;color:#dfe4ff}
+.diag-dica{margin-top:8px;color:#ffd38a}
+.qualidade{color:var(--ouro);letter-spacing:2px;margin-left:4px}
+.resumo{max-width:760px!important;text-align:left!important;max-height:86vh;overflow:auto}
+.resumo h4{color:var(--ouro2);margin:14px 0 6px}
+.resumo ul{margin:4px 0 4px 18px;padding:0}
+.resumo li{margin:3px 0}
+.resumo table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+.resumo td,.resumo th{border:1px solid #3c4fa8;padding:5px 7px;text-align:left;vertical-align:top}
+.resumo th{background:#1b2d93}
+.nivel-tag{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.nv1{background:#1fbf6a33;color:#8dffc0}.nv2{background:#f6c54433;color:#ffe08a}.nv3{background:#e0384b33;color:#ffb0ba}
+.escada{max-height:calc(100vh - 120px);overflow:auto}
+.escada li{font-size:13px;padding:3px 10px}
+
+/* ---- celular e tablet ---- */
+.mini-escada{display:none;width:100%;justify-content:space-between;gap:6px;flex-wrap:wrap;background:#0b1240;border:1.5px solid var(--ouro);color:#fff;border-radius:12px;padding:8px 10px;font-size:13px;cursor:pointer;font-family:inherit}
+.mini-escada b{color:var(--ouro2)}
+@media (max-width:900px){
+  .escada{order:-1;max-height:none;padding:8px}
+  .escada h4{display:none}
+  .mini-escada{display:flex}
+  .escada ol{display:none!important}
+  .escada.aberta ol{display:flex!important;max-height:45vh;overflow:auto;margin-top:8px}
+}
+@media (max-width:600px){
+  .app{padding:10px 10px 24px}
+  .logo .circulo{width:118px;height:118px;border-width:4px}
+  .logo .milhao{font-size:24px}.logo .o{font-size:15px}.logo .do{font-size:11px}
+  .titulo{margin-top:10px}
+  .cartao{padding:14px;border-radius:14px}
+  .regras{padding-left:18px;font-size:14px}
+  .topo{gap:6px;margin-bottom:8px}
+  .ajudas{gap:5px;width:100%;justify-content:space-between}
+  .ajuda{padding:7px 8px;font-size:12px;border-radius:12px;flex:1;justify-content:center;min-height:40px}
+  .icones{width:100%;justify-content:space-between}
+  .icone{flex:1;padding:9px 6px;font-size:15px;min-height:40px}
+  .icone .rot{display:none}
+  .palco{gap:8px;margin-bottom:10px}
+  .host{flex-basis:56px}.host svg{width:56px;height:64px}.host .nome{font-size:10px}
+  .balao{font-size:14px;padding:9px 11px;min-height:46px;border-radius:12px}
+  .pergunta{padding:20px 12px 14px;font-size:17px;border-width:2px;border-radius:16px}
+  .pergunta .valor{font-size:12px;max-width:94%;overflow:hidden;text-overflow:ellipsis}
+  .alts{gap:8px}
+  .alt{min-height:54px;font-size:15px;padding:9px 12px;gap:10px}
+  .alt .num{flex-basis:30px;height:30px}
+  .placar3{gap:6px}.placar3 div{min-width:0;flex:1;padding:6px 4px}.placar3 b{font-size:14px}
+  #explica .acoes{position:sticky;bottom:0;padding:16px 0 6px;background:linear-gradient(180deg,transparent,#070b2aee 35%)}
+  .op{padding:9px 10px}.op .ex{font-size:14px}
+  .univ{grid-template-columns:1fr}
+  .cartas{gap:6px}.carta{width:68px;height:98px}.carta .v{font-size:28px}
+  .barras{gap:8px;height:160px}.barras .b{width:44px}
+  .modal{padding:10px}
+  .fim .grande{font-size:38px}
+}
+@media (hover:none){ .so-teclado{display:none} .alt:hover:not(:disabled){transform:none} }
+@media (hover:hover){ .dica-celular{display:none} }
+@media (prefers-reduced-motion:reduce){ .luzes span,.estrelas,.logo .circulo{animation:none} }
+
+.modal .cartao{background:linear-gradient(180deg,#16226a,#0b1240)}
+</style>
+</head>
+<body>
+<div class="luzes"><span></span><span></span><span></span></div>
+<div class="estrelas"></div>
+
+<div class="app">
+
+<!-- ================= TELA INICIAL ================= -->
+<section id="telaInicio" class="tela ativa">
+  <div class="logo">
+    <div class="circulo"><div class="o">O</div><div class="milhao">MILHÃO</div><div class="do">DO PROCESSO</div></div>
+  </div>
+  <div class="titulo">O Milhão do Processo</div>
+  <p class="sub">Quiz show de revisão · Processo de Software · <span id="totalPerg"></span> perguntas</p>
+
+  <div class="grade-inicio">
+    <div class="cartao">
+      <h3>Valendo 1 milhão</h3>
+      <div class="modos">
+        <button class="botao ouro" onclick="iniciar('m16')">🏆 Clássico<small>16 perguntas</small></button>
+        <button class="botao ouro" onclick="iniciar('m24')">🔥 Longo<small>24 perguntas</small></button>
+        <button class="botao ouro" onclick="iniciar('m32')">💎 Maratona<small>32 perguntas</small></button>
+      </div>
+      <div class="recorde" id="recorde"></div>
+      <h3 style="margin-top:12px">Treinos sem eliminação</h3>
+      <div class="treinos">
+        <button class="botao" onclick="iniciar('novas')">📘 40 novas</button>
+        <button class="botao" onclick="iniciar('extras')">🧠 20 difíceis extras</button>
+        <button class="botao" onclick="iniciar('todas')">📚 Todas</button>
+      </div>
+      <button class="botao ghost" style="margin-top:10px" onclick="abrirResumo()">📖 Ver o resumo da matéria</button>
+      <h3 style="margin-top:14px">Regras</h3>
+      <ul class="regras">
+        <li>A dificuldade sobe em três blocos: <b>fáceis</b>, <b>médias</b> e <b>difíceis</b>. A última pergunta vale <b>R$ 1 milhão</b> (de mentirinha!).</li>
+        <li><b>Acertou</b>, sobe. <b>Parou</b>, leva o que tem. <b>Errou</b>, leva a metade. Errar a pergunta do milhão faz perder tudo.</li>
+        <li>Ajudas: <b>pulos</b> (3, ou 4 nos modos longos), <b>cartas</b>, <b>universitários</b> e <b>placas</b>.</li>
+        <li>Depois de cada resposta, o apresentador explica a matéria e <b>todas as alternativas</b>.</li>
+        <li class="so-teclado">Atalhos: <kbd>1</kbd>–<kbd>4</kbd> escolhem, <kbd>Enter</kbd> confirma ou avança, <kbd>Espaço</kbd> pula a fala.</li>
+      </ul>
+    </div>
+    <div class="cartao cfg">
+      <h3>Som e locutor</h3>
+      <label>Voz do apresentador</label>
+      <select id="selVoz"></select>
+      <div class="diag" id="diag"></div>
+      <label>Velocidade da fala: <span id="txtVel">1.00</span></label>
+      <input type="range" id="rngVel" min="0.7" max="1.5" step="0.05" value="1.0">
+      <label>Tom da voz: <span id="txtTom">1.00</span></label>
+      <input type="range" id="rngTom" min="0.7" max="1.3" step="0.05" value="1.0">
+      <label>Volume da música: <span id="txtMus">45%</span></label>
+      <input type="range" id="rngMus" min="0" max="1" step="0.05" value="0.45">
+      <label>Volume dos efeitos: <span id="txtSfx">75%</span></label>
+      <input type="range" id="rngSfx" min="0" max="1" step="0.05" value="0.75">
+      <div class="linha" style="margin-top:12px">
+        <button class="botao peq ghost" onclick="testarVoz()">🔊 Testar voz</button>
+        <button class="botao peq ghost" onclick="testarMusica()">🎵 Ouvir as trilhas</button>
+      </div>
+    </div>
+  </div>
+  <p class="rodape dica-celular">📱 No celular: use o navegador do aparelho e, se quiser, toque em Compartilhar › <b>Adicionar à Tela de Início</b> para abrir como app. No iPhone, tire o aparelho do modo silencioso para ouvir a música.</p>
+  <p class="rodape">Apresentador fictício. Música original composta e tocada pelo próprio navegador. Feito para estudar a revisão de Processo de Software.</p>
+</section>
+
+<!-- ================= TELA DO JOGO ================= -->
+<section id="telaJogo" class="tela">
+  <div class="topo">
+    <div class="ajudas" id="ajudas">
+      <button class="ajuda" id="ajPular" onclick="ajudaPular()">⏭ Pular <b id="qtdPulos">3</b></button>
+      <button class="ajuda" id="ajCartas" onclick="ajudaCartas()">🃏 Cartas</button>
+      <button class="ajuda" id="ajUniv" onclick="ajudaUniv()">🎓 Universitários</button>
+      <button class="ajuda" id="ajPlacas" onclick="ajudaPlacas()">📊 Placas</button>
+    </div>
+    <div class="icones">
+      <button class="icone" onclick="abrirResumo()" title="Resumo da matéria">📖<span class="rot"> matéria</span></button>
+      <button class="icone" id="btnMusica" onclick="alternarMusica()" title="Música">🎵 on</button>
+      <button class="icone" id="btnVoz" onclick="alternarVoz()" title="Locutor">🎙 on</button>
+      <button class="icone" onclick="pularFala()" title="Pular fala (Espaço)">⏩<span class="rot"> pular fala</span></button>
+      <button class="icone" onclick="voltarInicio()" title="Sair">✖<span class="rot"> sair</span></button>
+    </div>
+  </div>
+
+  <div class="jogo">
+    <div>
+      <div class="palco">
+        <div class="host" id="host">
+          <svg viewBox="0 0 96 110" aria-hidden="true">
+            <ellipse cx="48" cy="104" rx="30" ry="5" fill="#0006"/>
+            <path d="M18 104 Q20 70 48 66 Q76 70 78 104Z" fill="#1c1c3a" stroke="#f6c544" stroke-width="2"/>
+            <path d="M42 68 L48 84 L54 68Z" fill="#fff"/><path d="M46 72 L48 92 L50 72Z" fill="#e0384b"/>
+            <circle cx="48" cy="40" r="22" fill="#f1c09a"/>
+            <path d="M26 36 Q30 14 48 15 Q68 14 70 36 Q64 24 48 24 Q32 24 26 36Z" fill="#3a2a1a"/>
+            <circle cx="40" cy="38" r="2.6" fill="#222"/><circle cx="56" cy="38" r="2.6" fill="#222"/>
+            <path d="M36 31 Q40 29 44 31 M52 31 Q56 29 60 31" stroke="#3a2a1a" stroke-width="2" fill="none"/>
+            <ellipse class="boca" cx="48" cy="51" rx="6" ry="3.2" fill="#8a2030" style="transform-origin:48px 51px"/>
+            <rect x="70" y="56" width="5" height="26" rx="2" fill="#555" transform="rotate(20 72 69)"/>
+            <circle cx="68" cy="54" r="6" fill="#999" stroke="#f6c544" stroke-width="1.5"/>
+          </svg>
+          <div class="nome">Tio Dado</div>
+        </div>
+        <div class="balao" id="balao">…</div>
+      </div>
+
+      <div class="pergunta" id="caixaPergunta"><span class="valor" id="valorPergunta"></span><span id="txtPergunta"></span></div>
+      <div class="alts" id="alts"></div>
+
+      <div class="placar3" id="placar3">
+        <div class="e"><small>Errar</small><b id="vErrar">—</b></div>
+        <div class="p"><small>Parar</small><b id="vParar">—</b></div>
+        <div class="a"><small>Acertar</small><b id="vAcertar">—</b></div>
+      </div>
+      <div class="acoes" id="acoesPergunta">
+        <button class="botao peq ghost" id="btnParar" onclick="pararJogo()">✋ Parar e levar o prêmio</button>
+      </div>
+
+      <div class="explica" id="explica">
+        <div class="aula" id="aula"></div>
+        <div id="listaOps"></div>
+        <div class="acoes">
+          <button class="botao peq ghost" onclick="lerExplicacao()">🔁 Ouvir explicação de novo</button>
+          <button class="botao peq ouro" id="btnProxima" onclick="proxima()">Próxima pergunta ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="escada" id="escada">
+      <h4 id="tituloEscada">Escada do Milhão</h4>
+      <button class="mini-escada" id="miniEscada" onclick="toggleEscada()"></button>
+      <div id="progressoBox" style="display:none">
+        <div id="txtProg"></div>
+        <div class="progresso"><div id="barraProg"></div></div>
+        <div id="txtAcertos" style="color:var(--suave);font-size:14px"></div>
+      </div>
+      <ol id="listaEscada"></ol>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= TELA FINAL ================= -->
+<section id="telaFim" class="tela fim">
+  <div class="logo"><div class="circulo"><div class="o">O</div><div class="milhao">MILHÃO</div><div class="do">DO PROCESSO</div></div></div>
+  <div class="grande" id="fimTitulo"></div>
+  <p class="sub" id="fimSub"></p>
+  <div class="acoes" style="margin:10px 0 14px">
+    <button class="botao peq ouro" id="btnTreinarErros" onclick="iniciar('erros')">🎯 Treinar só o que errei</button>
+    <button class="botao peq" onclick="iniciar(modo === 'erros' ? 'todas' : modo)">🔄 Jogar de novo</button>
+    <button class="botao peq" onclick="abrirResumo()">📖 Resumo da matéria</button>
+    <button class="botao peq" onclick="voltarInicio()">🏠 Início</button>
+  </div>
+  <div class="cartao revisao">
+    <h3 id="fimRevTitulo">Revise o que você errou</h3>
+    <div id="fimLista"></div>
+  </div>
+</section>
+</div>
+
+<!-- confirmação -->
+<div class="modal" id="mConfirma"><div class="cartao">
+  <h3>Resposta final?</h3>
+  <p id="txtConfirma" style="font-size:18px"></p>
+  <div class="acoes">
+    <button class="botao peq ouro" id="btnSim" onclick="confirmar(true)">✔ Sim, confirmo</button>
+    <button class="botao peq" onclick="confirmar(false)">✖ Não, vou pensar</button>
+  </div>
+</div></div>
+
+<!-- cartas -->
+<div class="modal" id="mCartas"><div class="cartao">
+  <h3>Escolha uma carta</h3>
+  <p style="color:var(--suave)">Rei elimina nenhuma · Ás elimina 1 · Dois elimina 2 · Três elimina 3</p>
+  <div class="cartas" id="cartas"></div>
+  <p id="resCartas" style="min-height:24px;font-weight:700"></p>
+  <button class="botao peq ouro" id="fecharCartas" style="display:none" onclick="fechar('mCartas')">Voltar à pergunta</button>
+</div></div>
+
+<!-- universitários -->
+<div class="modal" id="mUniv"><div class="cartao">
+  <h3>Os universitários palpitam</h3>
+  <div class="univ" id="univ"></div>
+  <button class="botao peq ouro" onclick="fechar('mUniv')">Voltar à pergunta</button>
+</div></div>
+
+<!-- placas -->
+<div class="modal" id="mPlacas"><div class="cartao">
+  <h3>A plateia levantou as placas</h3>
+  <div class="barras" id="barras"></div>
+  <button class="botao peq ouro" onclick="fechar('mPlacas')">Voltar à pergunta</button>
+</div></div>
+
+<!-- resumo da matéria -->
+<div class="modal" id="mResumo"><div class="cartao resumo">
+  <h3>📖 Resumo da matéria — Processo de Software</h3>
+  <h4>1. Processo</h4>
+  <ul><li>Sequência ordenada de atividades: <b>entrada → processamento → saída</b>. Exemplo: receita de bolo.</li>
+  <li>Componentes: <b>Entrada</b> (insumos de fornecedores internos ou externos e o evento de início), <b>Saída</b> (produto, resultado e opinião do cliente), <b>Condições</b> (regras e leis), <b>Meios</b> (instalações, pessoas e ferramentas).</li>
+  <li>Processo <b>definido</b> responde: o que é feito, quando, por quem, o que usa, como faz e o que produz.</li></ul>
+  <h4>2. Mapeamento de processos</h4>
+  <ul><li>Mostra quem faz o quê, em que ordem e com quais decisões, e revela o que pode melhorar. Notações: <b>UML</b> e <b>BPMN</b> (padrão para processos de negócio).</li>
+  <li>Elementos: <b>objetos de fluxo</b>, <b>objetos de conexão</b> (setas), <b>raias</b> e <b>artefatos</b>.</li>
+  <li>Atividade = retângulo + verbo no infinitivo. Decisão = losango + pergunta. Evento = início ou fim.</li>
+  <li>Raia = função, setor ou sistema. <b>Nunca nome de pessoa.</b></li></ul>
+  <h4>3. Estrutura organizacional</h4>
+  <ul><li>Divisão do trabalho, autoridade, responsabilidade e comunicação. Desenhada no <b>organograma</b>. Afeta comunicação e tomada de decisão.</li>
+  <li>Centralizada (decisões no topo) ou descentralizada. Tipos: funcional, divisional, matricial (dois chefes), em rede, por projetos.</li></ul>
+  <h4>4. Etapas do processo de software (API TIM)</h4>
+  <table><tr><th>Etapa</th><th>Responsável</th><th>Saída</th></tr>
+  <tr><td>Análise (o QUÊ)</td><td>Analista de sistemas</td><td>Especificação do sistema</td></tr>
+  <tr><td>Projeto (o COMO)</td><td>Projetista ou arquiteto</td><td>Arquitetura (diagramas UML)</td></tr>
+  <tr><td>Implementação</td><td>Programador</td><td>Código-fonte</td></tr>
+  <tr><td>Teste</td><td>Analista de teste ou testador</td><td>Relatório de incidentes</td></tr>
+  <tr><td>Implantação</td><td>Desenvolvedor ou infraestrutura</td><td>Sistema instalado e usuário capacitado</td></tr>
+  <tr><td>Manutenção</td><td>Equipe</td><td>Mudanças após a homologação</td></tr></table>
+  <ul><li>Níveis de teste: unitário (desenvolvedor), integração (analista de sistemas), sistema (equipe de teste), homologação (usuário).</li>
+  <li>Tipos de teste: usabilidade, funcionalidade, performance, segurança.</li>
+  <li>Manutenção: <b>corretiva</b> (erro), <b>adaptativa</b> (ambiente mudou: lei, sistema operacional, banco), <b>evolutiva</b> (função nova).</li>
+  <li>Etapas de apoio: gerência de projetos, da qualidade e de configuração.</li></ul>
+  <h4>5. Gerência de projetos e melhoria</h4>
+  <ul><li>Gerente de projetos entrega o <b>planejamento do projeto</b>. Fases: iniciação, planejamento, execução, controle e encerramento.</li>
+  <li>Áreas: escopo, integração, custo, tempo, risco, qualidade, aquisições, partes interessadas, recursos humanos, comunicação.</li>
+  <li>Melhoria contínua com todas as partes envolvidas. Mede com <b>KPI</b>. Maturidade: <b>CMMI</b> e <b>MPS.BR</b>.</li></ul>
+  <h4>6. Modelos de processo</h4>
+  <ul><li><b>Cascata</b>: clássico, sequencial, preditivo. <b>Incremental</b>: entrega pedaços novos. <b>Evolucionário</b>: versão cada vez mais completa.</li>
+  <li><b>Prototipação</b>: cliente sem clareza, descobre requisitos. <b>Espiral</b>: ciclos ajustando o protótipo. <b>Ágeis</b>: Manifesto Ágil, adaptativos.</li></ul>
+  <div class="acoes"><button class="botao peq ouro" onclick="fechar('mResumo')">Fechar</button></div>
+</div></div>
+
+<script>
+// Banco de perguntas — Revisão Processo de Software
+// d = dificuldade (1 fácil, 2 média, 3 difícil) | c = índice da correta (0..3)
+// e = explicação de cada alternativa | m = mini-aula da matéria | n = true para as 40 novas
+const PERGUNTAS = [
+// ===================== 40 PERGUNTAS NOVAS =====================
+{n:true,d:1,q:"No exemplo da receita de bolo, o bolo pronto representa qual parte do processo?",
+o:["Entrada","Meios","Saída","Condições"],c:2,
+m:"Todo processo tem entrada, processamento e saída. A receita mostra os recursos, a ordem das atividades e o resultado final.",
+e:["Entrada são os insumos que começam o processo, como farinha, ovos e o pedido. O bolo é o que sai, não o que entra.",
+"Meios são os recursos para executar o trabalho: a cozinha, o forno e o confeiteiro. O bolo não é um recurso, é o resultado.",
+"Correta. A saída é o produto gerado e o resultado do negócio. O bolo pronto é exatamente isso.",
+"Condições são as regras do processo, como normas sanitárias. O bolo não é uma regra."]},
+
+{n:true,d:1,q:"Qual etapa do processo de software vem logo depois da Implementação?",
+o:["Projeto","Teste","Análise","Manutenção"],c:1,
+m:"A ordem das etapas fundamentais é Análise, Projeto, Implementação, Teste, Implantação e Manutenção. O truque é lembrar API TIM.",
+e:["O Projeto vem antes da Implementação. Primeiro se desenha a arquitetura, depois se escreve o código.",
+"Correta. Depois que o código é escrito, ele precisa ser testado para encontrar defeitos.",
+"A Análise é a primeira etapa de todas. É nela que se levantam os requisitos com o cliente.",
+"A Manutenção é a última etapa e só acontece depois da homologação."]},
+
+{n:true,d:1,q:"Quem é o responsável pela etapa de Implementação?",
+o:["Analista de sistemas","Programador ou desenvolvedor","Gerente de projetos","Usuário"],c:1,
+m:"Cada etapa tem seu responsável. Análise: analista de sistemas. Projeto: arquiteto. Implementação: programador. Teste: testador.",
+e:["O analista de sistemas cuida da Análise, levantando requisitos. Ele não escreve o código.",
+"Correta. O programador ou desenvolvedor escreve o código-fonte usando linguagens e paradigmas de programação.",
+"O gerente de projetos faz o planejamento do projeto, que é uma etapa de apoio.",
+"O usuário participa do teste de homologação, mas não programa o sistema."]},
+
+{n:true,d:1,q:"Qual é a principal saída da etapa de Implementação?",
+o:["Código-fonte","Especificação do sistema","Organograma","Relatório de incidentes"],c:0,
+m:"Saídas das etapas: Análise gera a especificação; Projeto gera a arquitetura; Implementação gera o código-fonte; Teste gera o relatório de incidentes.",
+e:["Correta. Implementar é codificar, e o resultado é o código-fonte do programa.",
+"A especificação do sistema é a saída da Análise.",
+"O organograma representa a estrutura organizacional da empresa. Não tem a ver com as etapas do software.",
+"O relatório de incidentes, ou de defeitos, é a saída da etapa de Teste."]},
+
+{n:true,d:1,q:"No mapeamento de processos, qual símbolo representa uma atividade?",
+o:["Losango","Retângulo","Círculo","Triângulo"],c:1,
+m:"Os objetos de fluxo são: atividade, que é um retângulo; decisão, que é um losango; e evento, que marca início ou fim.",
+e:["O losango representa uma decisão, também chamada de gateway.",
+"Correta. A atividade é um retângulo e seu nome usa verbo no infinitivo, como Cadastrar ou Imprimir.",
+"O círculo é usado para os eventos, como o início e o fim do processo.",
+"O triângulo não é usado para atividades no mapeamento estudado."]},
+
+{n:true,d:1,q:"Qual modelo de processo de software também é conhecido como modelo clássico?",
+o:["Espiral","Ágil","Cascata","Prototipação"],c:2,
+m:"O modelo Cascata é o clássico: sequencial e sistemático. Uma etapa só começa quando a anterior termina.",
+e:["O Espiral trabalha em ciclos, ajustando o protótipo às necessidades dos usuários. Não é o clássico.",
+"Os métodos ágeis são mais recentes e seguem o Manifesto Ágil. São adaptativos.",
+"Correta. O Cascata é o modelo clássico, com abordagem sequencial e sistemática.",
+"A Prototipação serve quando o cliente não tem clareza do que precisa. Não é chamada de clássica."]},
+
+{n:true,d:1,q:"Na etapa de Análise, qual destas é uma ferramenta para levantar requisitos?",
+o:["Entrevista","Compilador","Organograma","Teste unitário"],c:0,
+m:"Na Análise, o analista levanta requisitos com o cliente usando entrevistas, observação, questionários e coleta de documentação.",
+e:["Correta. A entrevista com o cliente é uma das principais ferramentas da Análise.",
+"O compilador transforma código em programa executável. É coisa da Implementação, não da Análise.",
+"O organograma mostra a estrutura da empresa. Não é usado para levantar requisitos de software.",
+"O teste unitário é feito pelo desenvolvedor depois de escrever o código."]},
+
+{n:true,d:1,q:"O que significa a sigla KPI?",
+o:["Indicador-chave de desempenho","Kit de Programação Integrada","Interface de Processo Chave","Conhecimento de Processo Interno"],c:0,
+m:"Todo processo deve ser avaliado e melhorado. Para medir, usamos KPIs, que são indicadores de desempenho. Exemplo: número de defeitos por versão.",
+e:["Correta. KPI vem do inglês Key Performance Indicator, ou indicador-chave de desempenho.",
+"Kit de Programação Integrada não existe nesse contexto. É uma alternativa inventada.",
+"Interface de Processo Chave também é inventada. KPI mede desempenho, não é interface.",
+"Conhecimento de Processo Interno é outra invenção. Lembre: performance, desempenho."]},
+
+{n:true,d:1,q:"Um defeito faz o sistema calcular o troco errado. Corrigir isso é qual tipo de manutenção?",
+o:["Evolutiva","Adaptativa","Corretiva","Implantação"],c:2,
+m:"Manutenção tem três tipos: corretiva corrige erro; adaptativa adapta a mudança de ambiente; evolutiva acrescenta ou melhora funcionalidade.",
+e:["A evolutiva acrescenta ou melhora funcionalidades. Aqui não há nada novo, só um erro.",
+"A adaptativa responde a mudanças no ambiente, como lei nova ou novo sistema operacional. Aqui é um defeito.",
+"Correta. Se existe um defeito, a manutenção que o corrige é a corretiva.",
+"Implantação não é tipo de manutenção. É a etapa que instala o sistema e capacita o usuário."]},
+
+{n:true,d:1,q:"O modelo MPS.BR, que avalia a maturidade do processo de software, tem origem:",
+o:["Americana","Brasileira","Europeia","Japonesa"],c:1,
+m:"Existem modelos que avaliam a maturidade do processo de software. Os dois citados na revisão são o CMMI e o MPS.BR.",
+e:["Americano é o CMMI, que é um modelo internacional.",
+"Correta. MPS.BR significa Melhoria de Processo do Software Brasileiro. O BR no nome já entrega a origem.",
+"Não é europeu. O próprio nome termina em BR, de Brasil.",
+"Não é japonês. O BR do nome indica Brasil."]},
+
+{n:true,d:1,q:"O que significa a sigla BPMN?",
+o:["Business Process Model and Notation","Basic Program Management Network","Brazilian Process Model Norm","Business Project Manager Notation"],c:0,
+m:"BPMN é a notação gráfica padrão para modelar processos de negócio. Ela unificou o modo de as empresas desenharem seus processos.",
+e:["Correta. Modelo e Notação de Processos de Negócio, a notação gráfica padrão.",
+"Não tem nada de programa nem de rede. É uma alternativa inventada.",
+"Não é brasileira. O B vem de Business, ou negócio.",
+"Quase. Mas não é Project Manager. É Process Model, ou modelo de processo."]},
+
+{n:true,d:1,q:"No mapeamento de processos, como deve ser escrita uma decisão?",
+o:["Com verbo no infinitivo","Em forma de pergunta","Com o nome de uma pessoa","Com um número"],c:1,
+m:"A decisão, ou gateway, é um losango que controla para onde o fluxo vai. Ela é escrita como pergunta, por exemplo: Pagamento aprovado?",
+e:["Verbo no infinitivo é a regra para as atividades, como Cadastrar ou Imprimir.",
+"Correta. A decisão usa questionamento, como: Cliente possui cadastro?",
+"Nome de pessoa nunca deve aparecer, nem mesmo nas raias.",
+"Número não descreve a decisão. Ela precisa ser uma pergunta."]},
+
+{n:true,d:1,q:"O que faz parte da etapa de Implantação?",
+o:["Escrever o código","Levantar requisitos com o cliente","Configurar o ambiente e capacitar o usuário","Desenhar a arquitetura"],c:2,
+m:"A Implantação coloca o sistema para funcionar no cliente: instala, configura o ambiente e treina o usuário. Pode ser feita pelo desenvolvedor ou pelo pessoal de infraestrutura.",
+e:["Escrever o código é a Implementação. Cuidado: Implementação e Implantação são etapas diferentes.",
+"Levantar requisitos é a Análise.",
+"Correta. A Implantação implanta o sistema, configura o ambiente e capacita o usuário.",
+"Desenhar a arquitetura é a etapa de Projeto."]},
+
+{n:true,d:2,q:"O evento que dá início a um processo faz parte de qual componente?",
+o:["Entrada","Saída","Meios","Condições"],c:0,
+m:"A Entrada inclui os insumos e informações dos fornecedores e também os eventos de início, que são os motivos para o processo começar.",
+e:["Correta. Segundo a revisão, a entrada inclui os eventos de início, que são os motivos para iniciar o processo.",
+"A saída é o fim: o produto gerado, o resultado e a opinião do cliente.",
+"Meios são os recursos: instalações, pessoas e ferramentas. Não são o motivo do início.",
+"Condições são regras e regulações. Elas limitam o processo, mas não o disparam."]},
+
+{n:true,d:2,q:"A opinião do cliente ou usuário sobre o produto faz parte de qual componente do processo?",
+o:["Entrada","Saída","Condições","Meios"],c:1,
+m:"A Saída engloba os produtos gerados, os resultados do negócio e a opinião do cliente ou usuário do produto ou serviço.",
+e:["A entrada é o que alimenta o processo. A opinião do cliente sobre o resultado vem depois.",
+"Correta. A revisão coloca a opinião do cliente como parte da saída do processo.",
+"Condições são regras legais ou do dono do processo, não a opinião do cliente.",
+"Meios são instalações, pessoas e ferramentas."]},
+
+{n:true,d:2,q:"Os fornecedores que entregam insumos para um processo podem ser:",
+o:["Apenas externos","Apenas internos","Internos ou externos","Sempre o cliente final"],c:2,
+m:"Na Entrada, os insumos são representados pelos fornecedores, que podem ser internos, como outro setor da empresa, ou externos, como outra empresa.",
+e:["Não só externos. Um setor da própria empresa também pode fornecer insumos.",
+"Não só internos. Empresas de fora também fornecem insumos.",
+"Correta. Os fornecedores podem ser internos ou externos.",
+"O cliente recebe a saída. Ele não é sempre o fornecedor da entrada."]},
+
+{n:true,d:2,q:"Segundo a revisão, quem realiza o teste de integração?",
+o:["Desenvolvedor","Analista de sistemas","Usuário","Gerente de projetos"],c:1,
+m:"Níveis de teste: unitário pelo desenvolvedor; integração pelo analista de sistemas; sistema pela equipe de teste; homologação pelo usuário.",
+e:["O desenvolvedor faz o teste unitário, das partes pequenas.",
+"Correta. O teste de integração, que verifica se as partes funcionam juntas, é do analista de sistemas.",
+"O usuário faz o teste de homologação.",
+"O gerente de projetos não executa testes. Ele planeja e controla o projeto."]},
+
+{n:true,d:2,q:"Quem realiza o teste unitário?",
+o:["Desenvolvedor","Equipe de teste","Usuário","Arquiteto de software"],c:0,
+m:"O teste unitário testa a menor parte do código, como um método ou uma classe. Quem faz é quem escreveu o código.",
+e:["Correta. O próprio desenvolvedor testa as unidades do código que ele escreveu.",
+"A equipe de teste faz o teste de sistema, que avalia o sistema inteiro.",
+"O usuário faz a homologação.",
+"O arquiteto trabalha na etapa de Projeto e não faz teste unitário."]},
+
+{n:true,d:2,q:"Quem realiza o teste de sistema?",
+o:["Usuário","Equipe de teste","Programador","Analista de sistemas"],c:1,
+m:"O teste de sistema avalia o sistema completo, já integrado, e é feito pela equipe de teste antes de ir para o usuário.",
+e:["O usuário faz a homologação, que vem depois.",
+"Correta. A equipe de teste faz o teste de sistema.",
+"O programador faz o teste unitário.",
+"O analista de sistemas faz o teste de integração."]},
+
+{n:true,d:2,q:"Usabilidade, funcionalidade, performance e segurança são exemplos de:",
+o:["Níveis de teste","Tipos de teste","Modelos de processo","Etapas de apoio"],c:1,
+m:"Níveis dizem em que escala se testa: unitário, integração, sistema e homologação. Tipos dizem qual característica se testa: usabilidade, performance, segurança.",
+e:["Os níveis são unitário, integração, sistema e homologação.",
+"Correta. São tipos de teste, que dependem das características do software.",
+"Modelos de processo são Cascata, Incremental, Espiral, Ágil e outros.",
+"Etapas de apoio são as gerências de projetos, de qualidade e de configuração."]},
+
+{n:true,d:2,q:"O cliente pede um novo relatório em um sistema que já está em uso. Que tipo de manutenção é essa?",
+o:["Corretiva","Adaptativa","Evolutiva","Homologação"],c:2,
+m:"Funcionalidade nova ou melhorada é manutenção evolutiva. Erro é corretiva. Mudança no ambiente é adaptativa.",
+e:["Corretiva seria se houvesse um defeito. Aqui o sistema funciona, só falta algo novo.",
+"Adaptativa seria uma mudança de ambiente, como uma lei ou um sistema operacional novo.",
+"Correta. Acrescentar um relatório novo é evoluir o sistema.",
+"Homologação é um nível de teste feito pelo usuário. Não é tipo de manutenção."]},
+
+{n:true,d:2,q:"A empresa troca de banco de dados e o sistema precisa ser ajustado para funcionar. Que manutenção é essa?",
+o:["Corretiva","Adaptativa","Evolutiva","Preventiva"],c:1,
+m:"A manutenção adaptativa adapta o software a mudanças no ambiente onde ele roda: lei nova, sistema operacional novo ou banco de dados novo.",
+e:["Não há defeito no sistema. Quem mudou foi o ambiente.",
+"Correta. O ambiente mudou, então o software precisa se adaptar.",
+"Não há funcionalidade nova para o usuário. É só adaptação ao novo banco.",
+"A revisão apresenta três tipos: corretiva, adaptativa e evolutiva. Preventiva não está entre eles."]},
+
+{n:true,d:2,q:"Segundo a revisão, quando começa a etapa de Manutenção?",
+o:["Antes do teste","Após a homologação","Durante a análise","Antes da implantação"],c:1,
+m:"A Manutenção se refere a mudanças no software depois da homologação, ou seja, depois que o usuário aceitou o sistema.",
+e:["Antes do teste o sistema ainda está em construção, então não há o que manter.",
+"Correta. A Manutenção começa após a homologação.",
+"Durante a Análise o sistema ainda nem existe.",
+"A Implantação vem antes da Manutenção, e não o contrário."]},
+
+{n:true,d:2,q:"Qual destas NÃO é uma das áreas da gerência de projetos?",
+o:["Escopo","Risco","Codificação","Aquisições"],c:2,
+m:"As áreas da gerência de projetos são: escopo, integração, custo, tempo, risco, qualidade, aquisições, partes interessadas, recursos humanos e comunicação.",
+e:["Escopo é uma área: define o que entra e o que não entra no projeto.",
+"Risco é uma área: cuida do que pode dar errado e do plano B.",
+"Correta. Codificação é uma etapa fundamental, a Implementação. Não é área da gerência de projetos.",
+"Aquisições é uma área: cuida de compras e contratações externas."]},
+
+{n:true,d:2,q:"Qual área da gerência de projetos cuida das compras e contratações externas?",
+o:["Escopo","Aquisições","Comunicação","Integração"],c:1,
+m:"Cada área tem um foco. Aquisições cuida do que se compra ou contrata de fora; comunicação, de quem recebe qual informação; integração, de juntar tudo em um plano.",
+e:["Escopo define o que o projeto vai entregar.",
+"Correta. Aquisições cuida de compras e contratações externas.",
+"Comunicação cuida do fluxo de informação entre as pessoas do projeto.",
+"Integração junta todas as áreas em um plano só."]},
+
+{n:true,d:2,q:"Qual é a principal saída da gerência de projetos?",
+o:["Código-fonte","Planejamento do projeto","Especificação do sistema","Relatório de defeitos"],c:1,
+m:"A gerência de projetos tem o gerente de projetos como responsável e o planejamento do projeto como principal produto.",
+e:["Código-fonte é a saída da Implementação.",
+"Correta. O gerente de projetos entrega o planejamento do projeto.",
+"Especificação do sistema é a saída da Análise.",
+"Relatório de defeitos é a saída do Teste."]},
+
+{n:true,d:2,q:"No mapeamento de processos, o que as raias podem representar?",
+o:["Uma função, um departamento ou um sistema","Apenas o nome das pessoas","Somente os clientes","As datas do processo"],c:0,
+m:"Raias são as faixas que dividem o processo por função ou papel. Elas mostram quem é responsável por cada atividade e decisão.",
+e:["Correta. A raia pode ser uma função, um departamento ou um sistema.",
+"Nunca use nome de pessoa nas raias. Use o papel, como Atendente.",
+"Não só clientes. Qualquer função, setor ou sistema pode ter uma raia.",
+"Datas não são raias. As raias mostram quem executa."]},
+
+{n:true,d:2,q:"O que são os objetos de conexão no mapeamento de processos?",
+o:["As setas que ligam os elementos","As raias","Os documentos anexos","Os losangos de decisão"],c:0,
+m:"Os quatro grupos de elementos são: objetos de fluxo, objetos de conexão, raias e artefatos.",
+e:["Correta. Objetos de conexão são as setas que ligam atividades, decisões e eventos e mostram a sequência.",
+"As raias são outro grupo: dividem o processo por função.",
+"Documentos são artefatos, que trazem informações extras.",
+"Losangos são decisões, que fazem parte dos objetos de fluxo."]},
+
+{n:true,d:2,q:"Segundo a regra do mapeamento, toda atividade deve estar ligada a:",
+o:["Outra atividade, uma decisão ou um evento de fim","Somente um evento de início","Nenhum outro elemento","Uma pessoa específica"],c:0,
+m:"Uma atividade nunca fica solta no fluxo. Depois dela sempre vem outra atividade, uma decisão ou o evento de fim.",
+e:["Correta. Toda atividade se liga a outra atividade, a uma decisão ou a um evento de fim.",
+"Não só ao início. A atividade precisa ter continuação.",
+"Atividade solta é erro de modelagem.",
+"Pessoas não aparecem no mapeamento. Usamos papéis nas raias."]},
+
+{n:true,d:2,q:"Qual modelo libera uma série de versões chamadas incrementos, cada uma com mais funcionalidade?",
+o:["Cascata","Incremental","Prototipação","Espiral"],c:1,
+m:"No modelo Incremental, cada entrega, chamada incremento, acrescenta funcionalidades. O cliente vai recebendo o sistema em partes.",
+e:["O Cascata entrega tudo no final, de forma sequencial.",
+"Correta. O Incremental entrega incrementos que oferecem cada vez mais funcionalidade.",
+"A Prototipação usa protótipos para descobrir requisitos. Não é sobre incrementos.",
+"O Espiral faz ciclos ajustando o protótipo às necessidades dos usuários."]},
+
+{n:true,d:2,q:"Qual é a principal característica das metodologias ágeis?",
+o:["São preditivas","São adaptativas","São estritamente sequenciais","Dispensam o cliente"],c:1,
+m:"Os métodos ágeis seguem o Manifesto Ágil. São adaptativos: aceitam mudanças ao longo do caminho em vez de prever tudo no início.",
+e:["Preditivo é o contrário do ágil. O Cascata é que tenta prever tudo no começo.",
+"Correta. A natureza dos métodos ágeis é adaptativa, e não preditiva.",
+"Estritamente sequencial é o Cascata.",
+"O ágil envolve muito o cliente. Ele não dispensa o cliente."]},
+
+{n:true,d:2,q:"Na etapa de Análise, qual destas NÃO é uma forma de levantar requisitos?",
+o:["Questionário","Observação","Compilação do código","Coleta de documentação"],c:2,
+m:"Ferramentas da Análise: entrevistas, observação, questionário e coleta de documentação. Todas servem para entender o que o cliente precisa.",
+e:["Questionário é uma ferramenta da Análise.",
+"Observar o trabalho do cliente é uma ferramenta da Análise.",
+"Correta. Compilar código é coisa da Implementação. Na Análise o código ainda nem existe.",
+"Coletar documentação, como formulários e relatórios do cliente, é uma ferramenta da Análise."]},
+
+{n:true,d:2,q:"Segundo a revisão, mapear processos ajuda a:",
+o:["Revelar aspectos que podem ser aprimorados","Escrever o código mais rápido","Eliminar a necessidade de testes","Definir os salários da equipe"],c:0,
+m:"Mapear é detalhar quem e o que está envolvido em um fluxo de trabalho. Isso ajuda a compreender o trabalho e mostra o que pode melhorar.",
+e:["Correta. O mapeamento revela aspectos que podem ser aprimorados no fluxo de trabalho.",
+"O mapeamento descreve o fluxo de trabalho. Ele não acelera a programação.",
+"Os testes continuam necessários. O mapeamento não substitui o teste.",
+"Salários não têm relação com o mapeamento de processos."]},
+
+{n:true,d:3,q:"Segundo a revisão, a estrutura organizacional impacta diretamente:",
+o:["A comunicação e a tomada de decisão","Apenas o salário dos funcionários","A linguagem de programação usada","O hardware da empresa"],c:0,
+m:"A estrutura organizacional é a forma como a empresa divide o trabalho, define autoridade e responsabilidade e organiza a comunicação.",
+e:["Correta. A revisão diz que a estrutura impacta a comunicação e a tomada de decisão.",
+"Salário não é citado como o impacto da estrutura.",
+"A estrutura organizacional é sobre pessoas e setores, não sobre linguagens de programação.",
+"Hardware não tem relação com a estrutura organizacional."]},
+
+{n:true,d:3,q:"Em uma estrutura organizacional em que as decisões ficam concentradas na alta direção, ela é chamada de:",
+o:["Descentralizada","Centralizada","Matricial","Em rede"],c:1,
+m:"A estrutura pode ser centralizada, com decisões no topo, ou descentralizada, com decisões distribuídas entre gestores e equipes.",
+e:["Descentralizada é o oposto: as decisões ficam espalhadas.",
+"Correta. Quando as decisões ficam concentradas no topo, a estrutura é centralizada.",
+"Matricial é um tipo de estrutura em que a pessoa responde a dois chefes. Não fala de onde ficam as decisões.",
+"Em rede é a empresa que coordena parceiros externos."]},
+
+{n:true,d:3,q:"Uma empresa se organiza em Divisão Sul e Divisão Norte, cada uma com seus próprios setores. Que estrutura é essa?",
+o:["Funcional","Divisional","Por projetos","Matricial"],c:1,
+m:"Tipos de estrutura: funcional, por especialidade; divisional, por produto, região ou cliente; matricial, que mistura funções com projetos; em rede; e por projetos.",
+e:["A funcional divide por especialidade, como RH, Financeiro e TI. Aqui a divisão é por região.",
+"Correta. Dividir por região, produto ou tipo de cliente é a estrutura divisional.",
+"Por projetos monta uma equipe para cada projeto e a desfaz no fim.",
+"A matricial cruza setores com projetos, e a pessoa responde a dois chefes."]},
+
+{n:true,d:3,q:"Qual modelo produz uma versão cada vez mais completa do software a cada iteração?",
+o:["Incremental","Evolucionário","Cascata","Prototipação"],c:1,
+m:"Incremental: cada entrega é uma parte nova. Evolucionário: cada versão é o sistema inteiro, mais completo. Essa diferença é pegadinha de prova.",
+e:["O Incremental entrega pedaços novos a cada vez, como primeiro o cadastro e depois o relatório. É a pegadinha.",
+"Correta. O Evolucionário produz uma versão cada vez mais completa a cada iteração.",
+"O Cascata não tem iterações. É uma sequência única.",
+"A Prototipação foca em descobrir requisitos quando o cliente não tem clareza."]},
+
+{n:true,d:3,q:"Qual destas é uma etapa de APOIO, e não uma etapa fundamental?",
+o:["Teste","Gerência de configuração","Implantação","Projeto"],c:1,
+m:"São 6 etapas fundamentais: Análise, Projeto, Implementação, Teste, Implantação e Manutenção. E 3 de apoio: gerência de projetos, da qualidade e de configuração.",
+e:["Teste é etapa fundamental.",
+"Correta. Gerência de configuração é etapa de apoio. Ela controla versões e mudanças.",
+"Implantação é etapa fundamental.",
+"Projeto é etapa fundamental."]},
+
+{n:true,d:3,q:"O que os modelos CMMI e MPS.BR avaliam?",
+o:["A maturidade do processo de software","A velocidade do computador","O salário dos desenvolvedores","Apenas a usabilidade da interface"],c:0,
+m:"A melhoria do processo exige avaliar e melhorar o processo ao longo da vida, com todas as partes envolvidas. CMMI e MPS.BR avaliam o nível de maturidade.",
+e:["Correta. CMMI e MPS.BR avaliam a maturidade do processo de software.",
+"Velocidade do computador é desempenho de hardware, não maturidade de processo.",
+"Salário não é avaliado por esses modelos.",
+"Usabilidade é um tipo de teste do produto, não uma avaliação do processo."]},
+
+{n:true,d:3,q:"Diagramas da UML aparecem principalmente como saída de qual etapa?",
+o:["Análise","Projeto","Implantação","Manutenção"],c:1,
+m:"A etapa de Projeto, feita pelo projetista ou arquiteto, gera a arquitetura do software com modelos, geralmente diagramas UML.",
+e:["A Análise gera a especificação do sistema, com os requisitos.",
+"Correta. O Projeto entrega a arquitetura com modelos, geralmente diagramas da UML.",
+"A Implantação instala o sistema e capacita o usuário.",
+"A Manutenção faz mudanças no software depois da homologação."]},
+
+// ============= 20 PERGUNTAS DO PRIMEIRO QUIZ =============
+{d:1,q:"Qual é a melhor definição de processo?",
+o:["Um conjunto de pessoas trabalhando no mesmo setor","Uma sequência ordenada de atividades que transforma entradas em um resultado","Um programa de computador que automatiza tarefas","O organograma da empresa"],c:1,
+m:"Processo é uma sequência de atividades em ordem, com começo, processamento e fim, para chegar a um resultado esperado.",
+e:["Pessoas no mesmo setor descrevem a estrutura organizacional, não um processo.",
+"Correta. Processo é uma sequência ordenada de atividades com entrada, transformação e saída.",
+"Um processo pode até ser automatizado, mas processo não é sinônimo de programa.",
+"O organograma representa a estrutura organizacional."]},
+
+{d:2,q:"Leis, normas e regras definidas pelo dono do processo fazem parte de qual componente?",
+o:["Entrada","Meios","Condições","Saída"],c:2,
+m:"Componentes: Entrada, insumos e eventos de início; Saída, resultado; Condições, as regras; Meios, os recursos.",
+e:["A entrada são os insumos e o evento de início.",
+"Meios são os recursos: instalações, pessoas e ferramentas.",
+"Correta. Condições são as regulações legais e as regras do dono ou do executante do processo.",
+"Saída é o produto, o resultado e a opinião do cliente."]},
+
+{d:2,q:"Instalações físicas, pessoas e ferramentas são exemplos de qual componente?",
+o:["Meios","Condições","Entrada","Saída"],c:0,
+m:"Meios são tudo o que é necessário para executar as atividades. Dica: meios são recursos; condições são regras.",
+e:["Correta. Os meios são instalações físicas, pessoas e ferramentas.",
+"Condições são regras, não recursos.",
+"Entrada é o que é consumido ou transformado, como matéria-prima e informações.",
+"Saída é o resultado do processo."]},
+
+{d:2,q:"Para um processo ser considerado definido, a documentação deve detalhar:",
+o:["Apenas o custo e o prazo","O nome de cada funcionário","O que é feito, quando, por quem, o que usa, como faz e o que produz","Somente o resultado final"],c:2,
+m:"Um processo é definido quando a documentação responde seis perguntas: o que, quando, por quem, o que usa, como faz e o que produz.",
+e:["Custo e prazo são temas de gerência de projetos, e não bastam para definir um processo.",
+"Usamos papéis e funções, não nomes de pessoas.",
+"Correta. São as seis perguntas da documentação de um processo definido.",
+"Só o resultado não basta. É preciso saber como se chega até ele."]},
+
+{d:1,q:"O que é BPMN?",
+o:["Uma linguagem de programação","Uma notação gráfica padrão para modelar processos de negócio","Um modelo de maturidade de software","Um tipo de estrutura organizacional"],c:1,
+m:"BPMN é a notação gráfica padrão de processos de negócio. Com ela é possível mapear os processos e acompanhar as atividades operacionais.",
+e:["BPMN não é linguagem de programação. Ela é usada para desenhar processos.",
+"Correta. É a notação padrão que unificou a modelagem de processos nas empresas.",
+"Modelos de maturidade são o CMMI e o MPS.BR.",
+"Tipos de estrutura são funcional, divisional, matricial, em rede e por projetos."]},
+
+{d:1,q:"Qual símbolo representa uma decisão, ou gateway?",
+o:["Retângulo","Círculo","Losango","Seta"],c:2,
+m:"Atividade é um retângulo, decisão é um losango, evento é um círculo e as setas são os objetos de conexão.",
+e:["O retângulo é a atividade.",
+"O círculo é o evento, de início ou de fim.",
+"Correta. A decisão é um losango e é escrita como pergunta.",
+"A seta é um objeto de conexão."]},
+
+{d:1,q:"Qual é o nome correto para uma atividade no mapeamento?",
+o:["Cadastro do cliente","Cadastrar cliente","Cliente cadastrado?","João cadastra"],c:1,
+m:"Atividades usam verbo no infinitivo, como Elaborar, Cadastrar e Imprimir.",
+e:["Cadastro é um substantivo. A regra pede verbo no infinitivo.",
+"Correta. Cadastrar está no infinitivo.",
+"Com ponto de interrogação, isso seria uma decisão.",
+"Não se usa nome de pessoa, e cadastra não está no infinitivo."]},
+
+{d:1,q:"Qual destes NÃO deve ser usado como nome de raia?",
+o:["Departamento Financeiro","Sistema de Vendas","Atendente","Maria Souza"],c:3,
+m:"Raias representam funções, departamentos ou sistemas. Nunca use nome próprio de pessoa.",
+e:["Departamento é um nome válido de raia.",
+"Sistema é um nome válido de raia.",
+"Atendente é uma função, então pode ser raia.",
+"Correta. Maria Souza é nome de pessoa, o que nunca se usa."]},
+
+{d:3,q:"Quais são os quatro grupos de elementos do mapeamento de processos?",
+o:["Objetos de fluxo, objetos de conexão, raias e artefatos","Entrada, saída, condições e meios","Análise, projeto, teste e implantação","Escopo, custo, tempo e risco"],c:0,
+m:"Não confunda: elementos do mapeamento são fluxo, conexão, raias e artefatos. Componentes do processo são entrada, saída, condições e meios.",
+e:["Correta. Esses são os quatro grupos de elementos do mapeamento.",
+"Esses são os componentes do processo. É a pegadinha.",
+"Essas são etapas do processo de software.",
+"Essas são áreas da gerência de projetos."]},
+
+{d:1,q:"Como a estrutura organizacional é representada graficamente?",
+o:["Diagrama BPMN","Organograma","Fluxograma","Cronograma"],c:1,
+m:"A estrutura organizacional mostra autoridade, responsabilidade e comunicação, com setores e cargos. O desenho é o organograma.",
+e:["O BPMN representa processos, não a estrutura da empresa.",
+"Correta. A estrutura organizacional é representada pelo organograma.",
+"Fluxograma mostra a sequência de um fluxo, não a hierarquia de cargos.",
+"Cronograma mostra prazos e tempo."]},
+
+{d:3,q:"Em qual estrutura um funcionário pode responder a dois chefes, o do setor e o do projeto?",
+o:["Funcional","Divisional","Matricial","Em rede"],c:2,
+m:"A matricial cruza a estrutura funcional com projetos, como uma matriz de linhas e colunas.",
+e:["A funcional tem um chefe por especialidade.",
+"A divisional divide por produto ou região, com uma linha de comando.",
+"Correta. Na matricial a pessoa responde ao chefe do setor e ao do projeto.",
+"Em rede é a coordenação de parceiros externos."]},
+
+{d:2,q:"Qual é a ordem correta das etapas fundamentais do processo de software?",
+o:["Projeto, Análise, Teste, Implementação, Implantação, Manutenção","Análise, Projeto, Implementação, Teste, Implantação, Manutenção","Análise, Implementação, Projeto, Teste, Manutenção, Implantação","Implementação, Teste, Análise, Projeto, Implantação, Manutenção"],c:1,
+m:"API TIM: Análise, Projeto, Implementação, Teste, Implantação, Manutenção.",
+e:["Não dá para projetar antes de saber o que o cliente quer. A Análise vem primeiro.",
+"Correta. É a ordem API TIM.",
+"Não se programa antes de projetar, e a Manutenção vem por último.",
+"Não se programa antes de analisar e projetar."]},
+
+{d:2,q:"Qual é a principal saída da etapa de Análise?",
+o:["Código-fonte","Arquitetura do software","Especificação do sistema","Relatório de incidentes"],c:2,
+m:"A Análise levanta os requisitos com o cliente e gera a especificação do sistema.",
+e:["O código-fonte é a saída da Implementação.",
+"A arquitetura é a saída do Projeto.",
+"Correta. A Análise entrega a especificação do sistema.",
+"O relatório de incidentes é a saída do Teste."]},
+
+{d:2,q:"Quem é o responsável pela etapa de Projeto e o que ele entrega?",
+o:["Programador, que entrega o código-fonte","Arquiteto de software, que entrega a arquitetura com diagramas UML","Analista de sistemas, que entrega a especificação","Gerente de projetos, que entrega o cronograma"],c:1,
+m:"Análise responde O QUÊ o sistema faz. Projeto responde COMO ele será feito.",
+e:["O programador é o responsável pela Implementação.",
+"Correta. O projetista ou arquiteto entrega a arquitetura com modelos, geralmente UML.",
+"O analista é o responsável pela Análise.",
+"O gerente de projetos cuida do planejamento, que é uma etapa de apoio."]},
+
+{d:2,q:"Quem realiza o teste de homologação?",
+o:["O desenvolvedor","O analista de sistemas","A equipe de teste","O usuário"],c:3,
+m:"Homologação é o teste de aceite. O usuário confirma se o sistema atende ao que ele pediu.",
+e:["O desenvolvedor faz o teste unitário.",
+"O analista de sistemas faz o teste de integração.",
+"A equipe de teste faz o teste de sistema.",
+"Correta. A homologação é feita pelo usuário."]},
+
+{d:2,q:"Uma nova lei muda o cálculo de um imposto e o sistema precisa ser alterado. Que manutenção é essa?",
+o:["Corretiva","Adaptativa","Evolutiva","Preventiva"],c:1,
+m:"Lei nova é uma mudança no ambiente do sistema, por isso a manutenção é adaptativa.",
+e:["Não havia erro. O sistema estava certo para a lei antiga.",
+"Correta. É adaptação a uma mudança de ambiente.",
+"Não é uma funcionalidade nova pedida pelo cliente. É uma exigência externa.",
+"Preventiva não está entre os três tipos da revisão."]},
+
+{d:3,q:"Quais são as etapas de APOIO do processo de software?",
+o:["Análise, Projeto e Teste","Gerência de projetos, gerência da qualidade e gerência de configuração","CMMI, MPS.BR e KPI","Implantação e Manutenção"],c:1,
+m:"As três etapas de apoio começam todas com Gerência: de projetos, da qualidade e de configuração.",
+e:["Essas são etapas fundamentais.",
+"Correta. São as três gerências.",
+"Esses são modelos de maturidade e um indicador, não etapas.",
+"Essas são etapas fundamentais."]},
+
+{d:3,q:"Quais são as fases da gerência de projetos?",
+o:["Iniciação, planejamento, execução, controle e encerramento","Análise, projeto, implementação e teste","Escopo, custo, tempo e risco","Entrada, processamento e saída"],c:0,
+m:"Fases são a linha do tempo do projeto. Áreas são os assuntos que o gerente administra, como escopo, custo e tempo.",
+e:["Correta. Essas são as fases do projeto.",
+"Essas são etapas do processo de software.",
+"Essas são áreas, não fases. É a pegadinha.",
+"Essas são as partes de qualquer processo."]},
+
+{d:2,q:"Quais modelos avaliam a maturidade do processo de software?",
+o:["BPMN e UML","Cascata e Espiral","CMMI e MPS.BR","KPI e Scrum"],c:2,
+m:"Maturidade de processo: CMMI, internacional, e MPS.BR, brasileiro. Para medir desempenho: KPI.",
+e:["BPMN e UML são notações de modelagem.",
+"Cascata e Espiral são modelos de processo, não de maturidade.",
+"Correta. CMMI e MPS.BR avaliam a maturidade.",
+"KPI é um indicador de desempenho, e Scrum é um método ágil."]},
+
+{d:3,q:"O cliente ainda não sabe direito o que precisa. Qual modelo ajuda a descobrir os requisitos?",
+o:["Cascata","Prototipação","Incremental","Ágil preditivo"],c:1,
+m:"A Prototipação é indicada quando o cliente não tem clareza da necessidade. O protótipo ajuda a identificar os requisitos.",
+e:["O Cascata exige requisitos claros desde o início.",
+"Correta. O protótipo ajuda o cliente a descobrir o que quer.",
+"O Incremental entrega partes, mas supõe que se saiba o que construir.",
+"Ágil preditivo não existe: os métodos ágeis são adaptativos."]}
+];
+
+// 20 perguntas extras (x:true) — foco em médias e difíceis, para os modos longos
+PERGUNTAS.push(
+{x:true,d:3,q:"Qual é a diferença entre níveis de teste e tipos de teste?",
+o:["Níveis dizem a escala do que se testa; tipos dizem qual característica se avalia","Níveis são feitos pelo usuário; tipos são feitos pelo programador","Não há diferença: são sinônimos","Níveis só existem no modelo Cascata; tipos só nos métodos ágeis"],c:0,
+m:"Níveis: unitário, integração, sistema e homologação, do menor pedaço até o aceite do usuário. Tipos: usabilidade, funcionalidade, performance, segurança, conforme a característica do software.",
+e:["Correta. Nível é a escala, da unidade até o sistema inteiro. Tipo é a característica avaliada, como segurança ou performance.",
+"Errado. Cada nível tem um responsável diferente: desenvolvedor, analista, equipe de teste e usuário. Tipos não são divididos por quem faz.",
+"Não são sinônimos. A revisão separa os dois conceitos.",
+"Níveis e tipos de teste existem em qualquer modelo de processo."]},
+
+{x:true,d:3,q:"Uma equipe entrega primeiro o módulo de cadastro, depois o de relatórios e depois o de pagamentos. Cada entrega traz uma parte nova. Que modelo é esse?",
+o:["Evolucionário","Incremental","Cascata","Prototipação"],c:1,
+m:"Incremental: cada entrega, chamada incremento, acrescenta uma parte nova. Evolucionário: cada versão é o sistema todo, cada vez mais completo.",
+e:["Pegadinha. No Evolucionário cada versão é o sistema inteiro amadurecendo, não um módulo novo de cada vez.",
+"Correta. Entregar partes novas a cada versão é o modelo Incremental.",
+"No Cascata tudo é entregue de uma vez no final.",
+"A Prototipação usa protótipos para descobrir requisitos, não para entregar módulos prontos."]},
+
+{x:true,d:3,q:"Qual combinação de etapa, responsável e saída está correta?",
+o:["Projeto, programador, código-fonte","Teste, analista de teste, relatório de incidentes","Análise, arquiteto, arquitetura","Implementação, usuário, especificação"],c:1,
+m:"Análise: analista de sistemas, especificação. Projeto: arquiteto, arquitetura. Implementação: programador, código-fonte. Teste: analista de teste ou testador, relatório de incidentes.",
+e:["Programador e código-fonte são da Implementação, não do Projeto.",
+"Correta. O Teste é feito pelo analista de teste ou testador e gera o relatório de incidentes, ou defeitos.",
+"Arquiteto e arquitetura são do Projeto. A Análise é do analista de sistemas e gera a especificação.",
+"O usuário não programa, e a especificação é saída da Análise."]},
+
+{x:true,d:3,q:"Em um mapeamento BPMN, o fluxo chega a um losango com o texto: Estoque disponível? Esse elemento é:",
+o:["Uma atividade","Uma decisão, ou gateway","Um evento de fim","Um artefato"],c:1,
+m:"Losango com pergunta é decisão, ou gateway. Ele controla para onde o fluxo vai, por exemplo sim para separar o pedido e não para avisar o cliente.",
+e:["Atividade é um retângulo com verbo no infinitivo, como Separar pedido.",
+"Correta. Losango e pergunta são as duas marcas de uma decisão.",
+"Evento de fim marca o término do processo. Não faz perguntas.",
+"Artefato traz informação extra, como um documento. Não decide o fluxo."]},
+
+{x:true,d:3,q:"Qual destes NÃO é um objeto de fluxo?",
+o:["Atividade","Decisão","Evento","Raia"],c:3,
+m:"Objetos de fluxo são atividade, decisão e evento. Raias são outro grupo de elementos: organizam o processo por função ou papel.",
+e:["Atividade é objeto de fluxo: é o trabalho executado.",
+"Decisão é objeto de fluxo: controla o caminho.",
+"Evento é objeto de fluxo: marca início ou fim.",
+"Correta. A raia não é objeto de fluxo. Ela é um grupo à parte que divide o processo por função."]},
+
+{x:true,d:3,q:"O que faz a gerência de configuração?",
+o:["Controla as versões e as mudanças dos arquivos do software","Configura o computador do usuário na implantação","Define o salário da equipe","Escolhe o modelo de processo"],c:0,
+m:"Gerência de configuração é uma etapa de apoio. Ela controla versões e mudanças, por exemplo com ferramentas como o Git.",
+e:["Correta. Ela registra e controla versões e mudanças do que é produzido.",
+"Configurar o ambiente do usuário faz parte da Implantação. O nome parecido é pegadinha.",
+"Salário não é assunto de nenhuma etapa do processo de software.",
+"A escolha do modelo de processo não é a função dessa gerência."]},
+
+{x:true,d:3,q:"Qual frase resume a diferença entre Análise e Projeto?",
+o:["A Análise define O QUÊ o sistema faz; o Projeto define COMO ele será feito","A Análise escreve o código; o Projeto testa","A Análise é feita pelo usuário; o Projeto pelo gerente","Não há diferença entre elas"],c:0,
+m:"Análise: requisitos do cliente, o que o sistema precisa fazer. Projeto: arquitetura e modelos UML, como o sistema vai ser construído.",
+e:["Correta. Essa é a diferença clássica entre as duas etapas.",
+"Código é Implementação, e testar é a etapa de Teste.",
+"A Análise é do analista de sistemas e o Projeto é do arquiteto.",
+"São etapas diferentes, com responsáveis e saídas diferentes."]},
+
+{x:true,d:3,q:"Qual modelo de processo tem natureza preditiva, tentando planejar tudo no início?",
+o:["Ágil","Cascata","Espiral","Evolucionário"],c:1,
+m:"Preditivo planeja tudo antes e segue em sequência, como o Cascata. Adaptativo muda ao longo do caminho, como os métodos ágeis.",
+e:["Os ágeis são adaptativos, o oposto de preditivo.",
+"Correta. O Cascata é sequencial e sistemático, e tenta prever tudo no começo.",
+"O Espiral trabalha em ciclos e vai ajustando o protótipo.",
+"O Evolucionário vai amadurecendo o sistema a cada iteração."]},
+
+{x:true,d:2,q:"Em qual etapa o usuário é capacitado, ou treinado, para usar o sistema?",
+o:["Análise","Teste","Implantação","Manutenção"],c:2,
+m:"A Implantação instala o sistema, configura o ambiente e capacita o usuário.",
+e:["Na Análise o usuário dá informações sobre o que precisa, mas não é treinado.",
+"No Teste de homologação o usuário avalia o sistema, mas a capacitação é da Implantação.",
+"Correta. Capacitar o usuário faz parte da Implantação.",
+"A Manutenção faz mudanças no software depois da homologação."]},
+
+{x:true,d:3,q:"Qual afirmação sobre a melhoria do processo de software está correta?",
+o:["Deve ser feita uma única vez, no início","Deve envolver todas as partes envolvidas e acontecer ao longo da vida do processo","É responsabilidade apenas do gerente de projetos","Só é necessária em empresas muito grandes"],c:1,
+m:"Todo processo deve ser avaliado e melhorado ao longo de sua vida, envolvendo todas as partes. Mede-se com KPIs, e a maturidade é avaliada com CMMI ou MPS.BR.",
+e:["Não é uma vez só: a melhoria é contínua.",
+"Correta. Melhoria contínua, com todas as partes envolvidas.",
+"Não é só do gerente. A revisão diz que todas as partes envolvidas participam.",
+"Qualquer empresa pode e deve melhorar seus processos. O MPS.BR foi pensado justamente para empresas menores."]},
+
+{x:true,d:3,q:"Um processo está documentado, mas não informa quem executa cada atividade. Qual pergunta do processo definido ficou sem resposta?",
+o:["O que é feito?","Quando?","Por quem?","O que produz?"],c:2,
+m:"As seis perguntas de um processo definido: o que é feito, quando, por quem, o que usa, como faz e o que produz.",
+e:["O que é feito descreve as atividades, e isso está documentado.",
+"Quando trata do momento ou da ordem das atividades.",
+"Correta. Quem executa cada atividade responde à pergunta Por quem.",
+"O que produz trata da saída do processo."]},
+
+{x:true,d:3,q:"Em qual modelo a iteração acontece em ciclos, ajustando o protótipo às necessidades dos usuários?",
+o:["Prototipação","Espiral","Cascata","Incremental"],c:1,
+m:"Espiral: a iteração vai ocorrendo conforme o protótipo é ajustado às necessidades dos usuários. Prototipação: usada quando o cliente não tem clareza, para descobrir requisitos.",
+e:["Pegadinha. A Prototipação usa protótipo, mas a definição de ciclos ajustando o protótipo é do Espiral.",
+"Correta. Essa é a definição do modelo Espiral na revisão.",
+"O Cascata não tem ciclos: é uma sequência única.",
+"O Incremental entrega partes novas, não ajusta um protótipo em ciclos."]},
+
+{x:true,d:3,q:"Uma construtora monta uma equipe para cada obra e desfaz a equipe quando a obra termina. Que estrutura é essa?",
+o:["Funcional","Por projetos","Divisional","Centralizada"],c:1,
+m:"Na estrutura por projetos, as equipes existem para um projeto específico e se desfazem quando ele acaba.",
+e:["Funcional divide por especialidade fixa, como RH e Financeiro.",
+"Correta. Equipe por obra, desfeita no fim, é estrutura por projetos.",
+"Divisional divide por produto, região ou cliente, e as divisões são permanentes.",
+"Centralizada fala de onde ficam as decisões, não de como as equipes se formam."]},
+
+{x:true,d:3,q:"Uma empresa coordena parceiros externos que fazem a produção, a logística e o atendimento. Que estrutura é essa?",
+o:["Em rede","Matricial","Funcional","Por projetos"],c:0,
+m:"Na estrutura em rede, uma empresa central coordena outras empresas parceiras que executam partes do trabalho.",
+e:["Correta. Coordenar parceiros externos é a estrutura em rede.",
+"Matricial cruza setores com projetos dentro da própria empresa.",
+"Funcional divide por especialidade dentro da empresa.",
+"Por projetos monta equipes temporárias para cada projeto."]},
+
+{x:true,d:2,q:"Na gerência de projetos, a área de partes interessadas cuida de:",
+o:["Todos que são afetados pelo projeto, como cliente, usuários e diretoria","Apenas os acionistas da empresa","Somente o código-fonte","As compras de equipamentos"],c:0,
+m:"Partes interessadas, ou stakeholders, são todos que afetam ou são afetados pelo projeto.",
+e:["Correta. Cliente, usuários, equipe e diretoria são partes interessadas.",
+"Não só acionistas. Todos os afetados pelo projeto contam.",
+"Código-fonte é saída da Implementação.",
+"Compras são da área de Aquisições."]},
+
+{x:true,d:2,q:"Qual é a última fase da gerência de projetos?",
+o:["Iniciação","Planejamento","Execução","Encerramento"],c:3,
+m:"Fases: Iniciação, Planejamento, Execução, Controle e Encerramento. O encerramento finaliza formalmente o projeto.",
+e:["A Iniciação é a primeira fase.",
+"O Planejamento vem logo depois da Iniciação.",
+"A Execução é quando o trabalho é feito, acompanhada pelo Controle.",
+"Correta. O Encerramento fecha o projeto."]},
+
+{x:true,d:3,q:"Qual sequência de saídas segue a ordem das etapas do processo de software?",
+o:["Código-fonte, especificação, arquitetura, relatório de incidentes","Especificação, arquitetura, código-fonte, relatório de incidentes","Arquitetura, especificação, relatório de incidentes, código-fonte","Relatório de incidentes, código-fonte, arquitetura, especificação"],c:1,
+m:"Análise gera especificação; Projeto gera arquitetura; Implementação gera código-fonte; Teste gera relatório de incidentes.",
+e:["Não dá para programar antes de especificar.",
+"Correta. É a ordem Análise, Projeto, Implementação e Teste.",
+"A especificação vem antes da arquitetura, e o código vem antes do teste.",
+"Essa é a ordem de trás para frente."]},
+
+{x:true,d:2,q:"Para que servem os KPIs no processo de software?",
+o:["Para medir o desempenho do processo e orientar melhorias","Para desenhar a arquitetura","Para escrever o código-fonte","Para substituir os testes"],c:0,
+m:"KPI é o indicador-chave de desempenho. Sem medir, não dá para saber se o processo melhorou.",
+e:["Correta. KPIs medem o desempenho e mostram onde melhorar.",
+"Arquitetura é saída do Projeto.",
+"Código é saída da Implementação.",
+"Indicadores não substituem testes. Podem até medir os resultados dos testes."]},
+
+{x:true,d:3,q:"Segundo a revisão, o que o mapeamento de processos representa visualmente?",
+o:["A sequência de atividades, as pessoas e as decisões envolvidas","Apenas o salário de cada cargo","O código-fonte do sistema","Somente as datas do cronograma"],c:0,
+m:"O mapeamento representa visualmente a sequência de atividades do fluxo de trabalho, as pessoas e as decisões envolvidas.",
+e:["Correta. Atividades, pessoas, ou melhor, papéis, e decisões.",
+"Salários não aparecem no mapeamento.",
+"Código-fonte não é mapeamento de processo.",
+"Cronograma é assunto da gerência de projetos."]},
+
+{x:true,d:3,q:"Quem realiza o teste de sistema e quem realiza o teste de homologação, respectivamente?",
+o:["Usuário e equipe de teste","Equipe de teste e usuário","Desenvolvedor e analista de sistemas","Analista de sistemas e desenvolvedor"],c:1,
+m:"Unitário: desenvolvedor. Integração: analista de sistemas. Sistema: equipe de teste. Homologação: usuário.",
+e:["Está invertido. O usuário faz a homologação, que vem por último.",
+"Correta. Equipe de teste no teste de sistema e usuário na homologação.",
+"Desenvolvedor faz o unitário e analista faz o de integração.",
+"Está invertido e fora de ordem: analista faz integração e desenvolvedor faz o unitário."]}
+);
+
+</script>
+<script>
+"use strict";
+// ======================================================
+//  UTILIDADES
+// ======================================================
+const $ = id => document.getElementById(id);
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const embaralhar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const NUMS = ["um", "dois", "três", "quatro"];
+const fmt = v => v === 0 ? "R$ 0" : v >= 1000000 ? "R$ 1 milhão" : "R$ " + v.toLocaleString("pt-BR");
+function porExtenso(n) {
+  const U = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
+  const D = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+  const C = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+  const ate99 = x => x < 20 ? U[x] : D[Math.floor(x / 10)] + (x % 10 ? " e " + U[x % 10] : "");
+  const ate999 = x => x === 100 ? "cem" : x < 100 ? ate99(x) : C[Math.floor(x / 100)] + (x % 100 ? " e " + ate99(x % 100) : "");
+  if (n === 0) return "zero";
+  if (n < 1000) return ate999(n);
+  const m = Math.floor(n / 1000), r = n % 1000;
+  return (m === 1 ? "mil" : ate999(m) + " mil") + (r ? ((r < 100 || r % 100 === 0) ? " e " : " ") + ate999(r) : "");
+}
+const extenso = v => v === 0 ? "nada" : v === 1000000 ? "um milhão de reais" : porExtenso(v) + " reais";
+</script>
+<script>
+// ======================================================
+//  MÚSICA E EFEITOS — composição original em Web Audio
+//  Ideias de trilha de quiz show aplicadas:
+//  - cada pergunta sobe um semitom (pressão crescente)
+//  - trilha muda por bloco: leve (fáceis), pulsante (médias),
+//    dramática (difíceis) e drone + coração (pergunta final)
+//  - relógio tiquetaqueando, stingers curtos no "travar", no acerto e no erro
+// ======================================================
+const Musica = {
+  ctx: null, master: null, bus: null, sfx: null, rev: null, revIn: null, dly: null, dlyIn: null,
+  vol: 0.45, volSfx: 0.75, ligada: true, abaixada: false,
+  faixa: null, cfg: null, passo: 0, proximo: 0, timer: null, ruido: null,
+
+  iniciar() {
+    if (this.ctx) { if (this.ctx.state === "suspended") this.ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    const c = this.ctx = new AC();
+    this.master = c.createGain(); this.master.gain.value = 0.85;
+    const comp = c.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3.5;
+    this.master.connect(comp); comp.connect(c.destination);
+    // reverb (resposta ao impulso gerada) e delay estéreo
+    this.rev = c.createConvolver(); this.rev.buffer = this.impulso(2.6, 2.4);
+    this.revIn = c.createGain(); this.revIn.gain.value = 0.32; this.revIn.connect(this.rev); this.rev.connect(this.master);
+    this.dly = c.createDelay(1); this.dlyIn = c.createGain(); this.dlyIn.gain.value = 0.22;
+    const fb = c.createGain(); fb.gain.value = 0.32; const dlyF = c.createBiquadFilter(); dlyF.type = "lowpass"; dlyF.frequency.value = 2800;
+    this.dlyIn.connect(this.dly); this.dly.connect(dlyF); dlyF.connect(fb); fb.connect(this.dly); dlyF.connect(this.master); dlyF.connect(this.revIn);
+    this.bus = c.createGain(); this.bus.gain.value = this.vol; this.bus.connect(this.master); this.bus.connect(this.revIn);
+    this.sfx = c.createGain(); this.sfx.gain.value = this.volSfx; this.sfx.connect(this.master); this.sfx.connect(this.revIn);
+    const len = c.sampleRate * 2; const b = c.createBuffer(1, len, c.sampleRate); const d = b.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1; this.ruido = b;
+    this.timer = setInterval(() => this.agendar(), 25);
+  },
+  impulso(seg, decai) {
+    const c = this.ctx, n = Math.floor(c.sampleRate * seg), buf = c.createBuffer(2, n, c.sampleRate);
+    for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, decai); }
+    return buf;
+  },
+  hz: m => 440 * Math.pow(2, (m - 69) / 12),
+
+  // ---------- instrumentos ----------
+  osc(tipo, freq, t, dur, g, dest, { at = 0.01, rel = 0.15, corte = 0, q = 0.7, det = 0, envF = 0, pan = 0, delay = 0 } = {}) {
+    const c = this.ctx, o = c.createOscillator(), e = c.createGain();
+    o.type = tipo; o.frequency.setValueAtTime(freq, t); o.detune.value = det;
+    e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(Math.max(g, 0.0002), t + at);
+    e.gain.setValueAtTime(Math.max(g, 0.0002), Math.max(t + at, t + dur - rel)); e.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    let ult = o;
+    if (corte) {
+      const f = c.createBiquadFilter(); f.type = "lowpass"; f.Q.value = q; f.frequency.setValueAtTime(corte, t);
+      if (envF) { f.frequency.setValueAtTime(corte + envF, t); f.frequency.exponentialRampToValueAtTime(Math.max(corte, 60), t + Math.min(dur, 0.35)); }
+      o.connect(f); ult = f;
+    }
+    ult.connect(e);
+    let saida = e;
+    if (pan && c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; e.connect(p); saida = p; }
+    saida.connect(dest || this.bus);
+    if (delay) { const s = c.createGain(); s.gain.value = delay; saida.connect(s); s.connect(this.dlyIn); }
+    o.start(t); o.stop(t + dur + 0.05);
+    return o;
+  },
+  pad(notas, t, dur, g = 0.03, corte = 1100) {
+    notas.forEach((m, i) => [-9, 9].forEach(det => this.osc("sawtooth", this.hz(m), t, dur, g, null, { at: Math.min(0.7, dur / 3), rel: Math.min(0.9, dur / 2), corte, det: det + i, pan: det > 0 ? 0.35 : -0.35 })));
+  },
+  pluck(m, t, g = 0.06, pan = 0, dl = 0.5) { this.osc("triangle", this.hz(m), t, 0.35, g, null, { at: 0.004, rel: 0.3, pan, delay: dl }); this.osc("square", this.hz(m), t, 0.12, g * 0.35, null, { at: 0.003, rel: 0.1, corte: 2600, pan, delay: dl }); },
+  baixo(m, t, dur, g = 0.22) { this.osc("sine", this.hz(m), t, dur, g, null, { at: 0.005, rel: 0.08 }); this.osc("sawtooth", this.hz(m), t, dur, g * 0.35, null, { at: 0.005, rel: 0.08, corte: 320, envF: 900, q: 4 }); },
+  metal(m, t, g = 0.05, dur = 0.28) { [0, 7].forEach((iv, i) => this.osc("sawtooth", this.hz(m + iv), t, dur, g, null, { at: 0.01, rel: 0.15, corte: 700, envF: 3200, q: 2, det: i * 6 })); },
+  sino(m, t, g = 0.05) { this.osc("sine", this.hz(m), t, 1.6, g, null, { at: 0.003, rel: 1.4, delay: 0.6 }); this.osc("sine", this.hz(m) * 2.76, t, 0.6, g * 0.3, null, { at: 0.003, rel: 0.5 }); },
+  ruidoF(t, g, tipo, freq, dur, dest, q = 1) {
+    const c = this.ctx, s = c.createBufferSource(), f = c.createBiquadFilter(), e = c.createGain();
+    s.buffer = this.ruido; f.type = tipo; f.frequency.value = freq; f.Q.value = q;
+    e.gain.setValueAtTime(g, t); e.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(e); e.connect(dest || this.bus); s.start(t, Math.random()); s.stop(t + dur + 0.02);
+  },
+  chimbal(t, g = 0.06) { this.ruidoF(t, g, "highpass", 8000, 0.04); },
+  palma(t, g = 0.12) { this.ruidoF(t, g, "bandpass", 1600, 0.13, null, 0.8); },
+  tique(t, g = 0.09, agudo = true) { this.osc("sine", agudo ? 2400 : 1800, t, 0.03, g, null, { at: 0.001, rel: 0.02 }); this.ruidoF(t, g * 0.6, "bandpass", agudo ? 4200 : 3000, 0.025, null, 6); },
+  bumbo(t, g = 0.6, dest) {
+    const c = this.ctx, o = c.createOscillator(), e = c.createGain();
+    o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(40, t + 0.16);
+    e.gain.setValueAtTime(g, t); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.34);
+    o.connect(e); e.connect(dest || this.bus); o.start(t); o.stop(t + 0.36);
+  },
+  coracao(t, g = 0.7, dest) { this.bumbo(t, g, dest); this.bumbo(t + 0.17, g * 0.6, dest); },
+
+  // ---------- faixas ----------
+  // cfg: { estilo, bpm, raiz (MIDI), prog: [[semitons do acorde],...] }
+  ESTILOS: {
+    abertura: { bpm: 124, raiz: 60, prog: [[0, 4, 7], [-3, 0, 4], [-7, -3, 0], [-5, -1, 2]] },
+    facil:    { bpm: 100, raiz: 57, prog: [[0, 3, 7], [-4, 0, 3], [-7, -4, 0], [-5, -1, 2]] },
+    media:    { bpm: 112, raiz: 57, prog: [[0, 3, 7], [-4, 0, 3], [5, 8, 12], [7, 11, 14]] },
+    dificil:  { bpm: 120, raiz: 48, prog: [[0, 3, 7], [1, 5, 8], [0, 3, 7], [-1, 2, 5]] },
+    final:    { bpm: 66,  raiz: 45, prog: [[0, 3, 7], [1, 4, 8], [0, 3, 7], [-1, 3, 6]] },
+    explica:  { bpm: 84,  raiz: 60, prog: [[0, 4, 7, 11], [-3, 0, 4, 7], [-7, -3, 0, 4], [-5, -1, 2, 5]] }
+  },
+  tocar(estilo, semitom = 0) {
+    if (!this.ctx) return;
+    const chave = estilo + ":" + semitom;
+    if (this.faixa === chave) return;
+    this.faixa = chave; this.cfg = { estilo, ...this.ESTILOS[estilo], k: semitom };
+    this.passo = 0; this.proximo = this.ctx.currentTime + 0.1;
+  },
+  parar() { this.faixa = null; this.cfg = null; },
+  agendar() {
+    if (!this.ctx || !this.cfg || !this.ligada) return;
+    const dt = 60 / this.cfg.bpm / 4; // semicolcheias
+    while (this.proximo < this.ctx.currentTime + 0.12) { this.passoMusical(this.cfg, this.passo, this.proximo, dt); this.passo++; this.proximo += dt; }
+  },
+  passoMusical(F, p, t, dt) {
+    const s = p % 16, comp = Math.floor(p / 16), ac = F.prog[comp % F.prog.length], R = F.raiz + F.k;
+    const nota = i => R + ac[i % ac.length] + 12 * Math.floor(i / ac.length);
+    const ciclo = Math.floor(comp / F.prog.length); // camadas entram com o tempo
+    if (F.estilo === "abertura") {
+      if (s % 4 === 0) this.bumbo(t, 0.55);
+      if (s % 8 === 4) this.palma(t, 0.14);
+      if (s % 2 === 0) this.chimbal(t, s % 4 === 2 ? 0.07 : 0.035);
+      if ([0, 3, 6, 10].includes(s)) this.metal(nota(0) + 12, t, 0.045, dt * 2.2);
+      this.baixo(R + ac[0] - 12 + (s % 4 === 2 ? 12 : 0), t, dt * 0.9, s % 4 === 0 ? 0.2 : 0.12);
+      const gancho = [12, null, 16, null, 19, null, 16, 19, null, 24, null, 19, 16, null, 14, null];
+      const m = gancho[s]; if (m !== null && comp % 2 === 0) this.pluck(R + m, t, 0.05, 0.2, 0.4);
+      if (s === 0) this.pad(ac.map(x => R + x), t, dt * 16, 0.016, 1800);
+    } else if (F.estilo === "facil") {
+      if (s === 0) this.pad(ac.map(x => R + x), t, dt * 16, 0.02, 900);
+      if (s % 4 === 0) this.tique(t, 0.07, s % 8 === 0);
+      if (s === 0 || s === 8) this.bumbo(t, 0.35);
+      if (s % 2 === 0) this.pluck(nota([0, 1, 2, 1, 3, 2, 1, 2][s / 2]) + 12, t, 0.035, s % 4 ? 0.3 : -0.3, 0.45);
+      if (s === 0 || s === 6 || s === 10) this.baixo(R + ac[0] - 12, t, dt * 3, 0.16);
+    } else if (F.estilo === "media") {
+      if (s === 0) this.pad(ac.map(x => R + x), t, dt * 16, 0.022, 1200);
+      this.baixo(R + ac[0] - 12 + (s % 8 === 7 ? 7 : 0), t, dt * 0.8, s % 4 === 0 ? 0.2 : 0.11);
+      if (s % 4 === 0) this.tique(t, 0.08, true);
+      if (s % 8 === 0) this.bumbo(t, 0.5);
+      if (s % 8 === 4) this.palma(t, 0.09);
+      if (s % 2 === 1) this.chimbal(t, 0.03);
+      if (ciclo > 0 && s % 2 === 0) this.pluck(nota([2, 1, 0, 1, 2, 3, 2, 1][s / 2]) + 12, t, 0.03, 0.25, 0.5);
+    } else if (F.estilo === "dificil") {
+      if (s === 0) { this.pad(ac.map(x => R + 12 + x), t, dt * 16, 0.026, 800); this.osc("sine", this.hz(R - 12), t, dt * 16, 0.12, null, { at: 0.3, rel: 0.5 }); }
+      if (s === 0 || s === 8) this.coracao(t, 0.6);
+      if (s % 4 === 0) this.tique(t, 0.09, s % 8 === 0);
+      if (s % 2 === 0) this.osc("sawtooth", this.hz(nota(s % 4 === 0 ? 0 : 2) + 24), t, dt * 0.9, 0.025, null, { corte: 1600, envF: 2000, q: 3, delay: 0.3 });
+      if (ciclo > 0 && (s === 6 || s === 14)) this.metal(R + ac[1] + 12, t, 0.035, dt * 2);
+    } else if (F.estilo === "final") {
+      if (s === 0) { this.osc("sawtooth", this.hz(R), t, dt * 16, 0.05, null, { at: 1, rel: 1, corte: 380, det: -8 }); this.osc("sawtooth", this.hz(R + 7), t, dt * 16, 0.03, null, { at: 1, rel: 1, corte: 420, det: 8 }); }
+      if (s === 0 || s === 8) this.coracao(t, 0.75);
+      if (s % 4 === 2) this.tique(t, 0.06, false);
+      if (s === 12 && comp % 2 === 1) this.sino(R + 36 + ac[2], t, 0.04);
+    } else if (F.estilo === "explica") {
+      if (s === 0) { this.pad(ac.map(x => R + x), t, dt * 16, 0.02, 1500); this.osc("sine", this.hz(R + ac[0] - 24), t, dt * 16, 0.12, null, { at: 0.08, rel: 0.6 }); }
+      if (s % 4 === 0 || s === 6) this.pluck(nota([0, 2, 3, 1][(s / 4) | 0] ?? 2) + 12, t, 0.03, s % 8 ? 0.3 : -0.3, 0.5);
+      if (s % 8 === 4) this.chimbal(t, 0.02);
+    }
+  },
+  abaixar(sim) {
+    this.abaixada = sim; if (!this.ctx) return;
+    const alvo = this.ligada ? this.vol * (sim ? 0.3 : 1) : 0;
+    this.bus.gain.setTargetAtTime(alvo, this.ctx.currentTime, 0.18);
+  },
+  setVol(v) { this.vol = v; this.abaixar(this.abaixada); },
+  setSfx(v) { this.volSfx = v; if (this.sfx) this.sfx.gain.value = v; },
+
+  // ---------- stingers e efeitos ----------
+  efeito(nome, k = 0) {
+    if (!this.ctx) return; const t = this.ctx.currentTime + 0.02, S = this.sfx, h = m => this.hz(m + k);
+    const o = (tipo, m, tt, dur, g, extra = {}) => this.osc(tipo, h(m), tt, dur, g, S, extra);
+    if (nome === "clique") o("square", 84, t, 0.05, 0.05, { corte: 3000 });
+    if (nome === "marcar") { o("square", 72, t, 0.08, 0.06, { corte: 2500 }); o("square", 79, t + 0.07, 0.12, 0.06, { corte: 2500 }); }
+    if (nome === "ajuda") [76, 79, 83, 88, 91].forEach((m, i) => this.osc("sine", this.hz(m), t + i * 0.05, 0.5, 0.08, S, { delay: 0.5 }));
+    if (nome === "travar") { // resposta final: dois golpes graves + subida
+      [0, 0.32].forEach(d => { this.bumbo(t + d, 0.8, S); [48, 55, 60].forEach(m => o("sawtooth", m, t + d, 0.45, 0.05, { corte: 500, envF: 2500, q: 2 })); });
+      this.ruidoF(t + 0.6, 0.05, "bandpass", 600, 1.8, S, 2);
+    }
+    if (nome === "certo") {
+      [60, 64, 67, 72].forEach((m, i) => o("square", m + 12, t + i * 0.07, 0.22, 0.06, { corte: 4000 }));
+      [60, 64, 67, 72, 76].forEach(m => o("sawtooth", m, t + 0.3, 1.6, 0.04, { at: 0.02, rel: 1.0, corte: 3000, envF: 3000 }));
+      this.bumbo(t + 0.3, 0.9, S); this.ruidoF(t + 0.3, 0.25, "highpass", 5000, 1.2, S);
+      [84, 88, 91, 96].forEach((m, i) => this.osc("sine", h(m), t + 0.45 + i * 0.06, 0.8, 0.03, S, { delay: 0.5 }));
+    }
+    if (nome === "errado") {
+      [[55, 58, 61], [54, 57, 60], [53, 56, 59]].forEach((ac, i) => ac.forEach(m => o("sawtooth", m - 12, t + i * 0.35, i === 2 ? 1.6 : 0.33, 0.05, { corte: 900 })));
+      this.bumbo(t + 0.7, 0.9, S); this.ruidoF(t + 0.7, 0.1, "lowpass", 300, 1.2, S);
+    }
+    if (nome === "subiu") [67, 72, 76, 79].forEach((m, i) => o("triangle", m, t + i * 0.05, 0.3, 0.05, { delay: 0.4 }));
+    if (nome === "vitoria") {
+      const seq = [60, 64, 67, 72, 67, 72, 76, 79, 84];
+      seq.forEach((m, i) => o("square", m, t + i * 0.11, 0.2, 0.06, { corte: 4500 }));
+      [60, 64, 67, 72, 76, 79].forEach(m => o("sawtooth", m, t + 1.05, 3, 0.035, { at: 0.05, rel: 2, corte: 4000 }));
+      for (let i = 0; i < 8; i++) this.ruidoF(t + 1.05 + i * 0.07, 0.15, "highpass", 3000, 0.4, S);
+      this.bumbo(t + 1.05, 1, S);
+    }
+  },
+  async suspense(seg, k = 0) {
+    if (!this.ctx) { await new Promise(r => setTimeout(r, seg * 1000)); return; }
+    const c = this.ctx, t = c.currentTime + 0.02, S = this.sfx;
+    this.parar();
+    [45, 45.12, 52].forEach(m => {
+      const o = c.createOscillator(), f = c.createBiquadFilter(), g = c.createGain();
+      o.type = "sawtooth"; o.frequency.setValueAtTime(this.hz(m + k), t); o.frequency.linearRampToValueAtTime(this.hz(m + k + 2), t + seg);
+      f.type = "lowpass"; f.frequency.setValueAtTime(180, t); f.frequency.exponentialRampToValueAtTime(2600, t + seg);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.5); g.gain.setValueAtTime(0.05, t + seg - 0.1); g.gain.exponentialRampToValueAtTime(0.0001, t + seg + 0.05);
+      o.connect(f); f.connect(g); g.connect(S); o.start(t); o.stop(t + seg + 0.1);
+    });
+    this.ruidoF(t, 0.0001, "bandpass", 800, 0.1, S);
+    const n = c.createBufferSource(), nf = c.createBiquadFilter(), ng = c.createGain();
+    n.buffer = this.ruido; n.loop = true; nf.type = "bandpass"; nf.Q.value = 3; nf.frequency.setValueAtTime(300, t); nf.frequency.exponentialRampToValueAtTime(5000, t + seg);
+    ng.gain.setValueAtTime(0.0001, t); ng.gain.exponentialRampToValueAtTime(0.05, t + seg - 0.05); ng.gain.exponentialRampToValueAtTime(0.0001, t + seg + 0.05);
+    n.connect(nf); nf.connect(ng); ng.connect(S); n.start(t); n.stop(t + seg + 0.1);
+    let x = 0, iv = 0.8;
+    while (x < seg - 0.25) { this.coracao(t + x, 0.75, S); x += iv; iv = Math.max(0.36, iv * 0.86); }
+    await new Promise(r => setTimeout(r, seg * 1000));
+  }
+};
+
+</script>
+<script>
+// ======================================================
+//  LOCUTOR — Web Speech API com escolha da voz mais humana
+//  Edge: vozes "Online (Natural)" (neurais, quase humanas)
+//  Chrome: "Google português do Brasil" (online, boa)
+//  Brave: só vozes instaladas no Windows (Maria/Daniel)
+// ======================================================
+const Navegador = (() => {
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return "iPhone/iPad";
+  if (/Android/.test(ua)) return /SamsungBrowser/.test(ua) ? "Samsung Internet" : "Android";
+  if (navigator.brave) return "Brave";
+  if (/Edg\//.test(ua)) return "Edge";
+  if (/OPR\//.test(ua)) return "Opera";
+  if (/Firefox\//.test(ua)) return "Firefox";
+  if (/Chrome\//.test(ua)) return "Chrome";
+  if (/Safari\//.test(ua)) return "Safari";
+  return "Navegador";
+})();
+
+function qualidadeVoz(v) {
+  if (!v) return { nivel: 0, rotulo: "sem voz" };
+  if (/natural|neural|online|enhanced|melhorad|premium/i.test(v.name)) return { nivel: 3, rotulo: "natural, quase humana" };
+  if (/google/i.test(v.name) || !v.localService) return { nivel: 2, rotulo: "boa (online)" };
+  return { nivel: 1, rotulo: "padrão do sistema (mais robótica)" };
+}
+
+const Voz = {
+  ativa: true, voz: null, vel: 1.0, tom: 1.0, id: 0, vozes: [], keep: null,
+  carregar() {
+    const synth = window.speechSynthesis;
+    if (!synth) { this.vozes = []; Diagnostico.atualizar(); return; }
+    const preencher = () => {
+      const todas = synth.getVoices();
+      const pt = todas.filter(v => /^pt/i.test(v.lang));
+      const nota = v => qualidadeVoz(v).nivel * 10 + (/pt[-_]BR/i.test(v.lang) ? 5 : 0) + (/antonio|francisca|thalita|google|luciana|felipe/i.test(v.name) ? 2 : 0);
+      this.vozes = pt.sort((a, b) => nota(b) - nota(a));
+      const sel = $("selVoz"); const antes = this.voz && this.voz.name; sel.innerHTML = "";
+      if (!this.vozes.length) {
+        sel.innerHTML = '<option value="">Voz padrão do sistema (pt-BR)</option>'; this.voz = null;
+      } else {
+        this.vozes.forEach((v, i) => { const o = document.createElement("option"); o.value = i; o.textContent = `${v.name} — ${qualidadeVoz(v).rotulo}`; sel.appendChild(o); });
+        let i = this.vozes.findIndex(v => v.name === antes);
+        if (i < 0) { try { const salvo = localStorage.getItem("milhao_voz"); i = this.vozes.findIndex(v => v.name === salvo); } catch (e) {} }
+        if (i < 0) i = this.vozes.findIndex(v => /antonio/i.test(v.name) && qualidadeVoz(v).nivel === 3);
+        if (i < 0) i = 0;
+        sel.value = i; this.voz = this.vozes[i];
+      }
+      Diagnostico.atualizar();
+    };
+    preencher();
+    if (synth.addEventListener) synth.addEventListener("voiceschanged", preencher); else synth.onvoiceschanged = preencher;
+    setTimeout(preencher, 800); setTimeout(preencher, 2500);
+    $("selVoz").onchange = e => { this.voz = this.vozes[+e.target.value] || null; try { localStorage.setItem("milhao_voz", this.voz ? this.voz.name : ""); } catch (er) {} Diagnostico.atualizar(); };
+  },
+  // outra voz para os universitários (quando houver mais de uma)
+  vozExtra(i) {
+    if (this.vozes.length < 2) return this.voz;
+    const outras = this.vozes.filter(v => v !== this.voz);
+    const boas = outras.filter(v => qualidadeVoz(v).nivel >= qualidadeVoz(this.voz).nivel);
+    const lista = boas.length ? boas : outras;
+    return lista[i % lista.length];
+  },
+  cancelar() { this.id++; try { speechSynthesis.cancel(); } catch (e) {} this.fim(); },
+  fim() { $("host").classList.remove("falando"); Musica.abaixar(false); clearInterval(this.keep); this.keep = null; },
+  async falar(texto, { legenda = true, voz = null, tom = null } = {}) {
+    const meuId = ++this.id;
+    try { speechSynthesis.cancel(); } catch (e) {}
+    if (legenda) $("balao").textContent = texto;
+    if (!this.ativa || !window.speechSynthesis) { await espera(200); return meuId === this.id; }
+    // frases curtas: evita o corte de falas longas no Chrome e deixa a entonação mais natural
+    const frases = (texto.match(/[^.!?…:;]+[.!?…:;]*\s*/g) || [texto]).map(f => f.trim()).filter(Boolean);
+    $("host").classList.add("falando"); Musica.abaixar(true);
+    const v = voz || this.voz;
+    if (v && /google/i.test(v.name) && !this.keep) this.keep = setInterval(() => { try { if (speechSynthesis.speaking) { speechSynthesis.pause(); speechSynthesis.resume(); } } catch (e) {} }, 9000);
+    for (const f of frases) {
+      if (meuId !== this.id) return false;
+      await this.frase(f, v, tom);
+      if (meuId !== this.id) return false;
+      if (/[.!?…]$/.test(f)) await espera(qualidadeVoz(v).nivel === 3 ? 60 : 140);
+    }
+    if (meuId === this.id) this.fim();
+    return meuId === this.id;
+  },
+  frase(t, v, tom) {
+    return new Promise(res => {
+      const u = new SpeechSynthesisUtterance(t);
+      u.lang = v ? v.lang : "pt-BR"; if (v) u.voice = v;
+      u.rate = this.vel; u.pitch = tom || this.tom;
+      let feito = false; const fim = () => { if (!feito) { feito = true; clearTimeout(tm); res(); } };
+      u.onend = fim; u.onerror = fim;
+      const tm = setTimeout(fim, 3000 + t.length * 110 / this.vel);
+      speechSynthesis.speak(u);
+    });
+  }
+};
+
+// ======================================================
+//  DIAGNÓSTICO DO NAVEGADOR — dicas específicas
+// ======================================================
+const Diagnostico = {
+  atualizar() {
+    const box = $("diag"); if (!box) return;
+    const n = Voz.vozes.length, q = qualidadeVoz(Voz.voz), naturais = Voz.vozes.filter(v => qualidadeVoz(v).nivel === 3).length;
+    const estrelas = "★".repeat(Math.max(q.nivel, 0)) + "☆".repeat(3 - Math.max(q.nivel, 0));
+    const dicas = {
+      Edge: naturais ? "Ótimo! O Edge tem vozes neurais. Experimente Antonio, Francisca e Thalita (precisam de internet)." : "O Edge ainda não carregou as vozes naturais. Confira a internet e recarregue a página.",
+      Chrome: "No Chrome a melhor opção é Google português do Brasil (precisa de internet). Para vozes quase humanas, use o Edge.",
+      Brave: "O Brave só usa as vozes instaladas no Windows, que soam mais robóticas. Para voz quase humana, abra no Edge. Se não sair som, deixe o Shields com bloqueio de fingerprinting no modo padrão.",
+      Firefox: "O Firefox usa só as vozes do sistema. Para voz quase humana no PC, use o Edge.",
+      "iPhone/iPad": "No iPhone, as melhores vozes são Luciana ou Felipe na versão Melhorada. Baixe em Ajustes › Acessibilidade › Conteúdo Falado › Vozes › Português (Brasil). Tire o aparelho do modo silencioso para ouvir a música.",
+      Android: "No Android, o jogo usa as vozes do Google. Se a voz não sair em português, instale os dados de voz em Português (Brasil) nas configurações de Texto para fala do aparelho.",
+      "Samsung Internet": "No Samsung Internet, se a voz não sair em português, abra o jogo pelo Chrome ou instale a voz Português (Brasil) nas configurações de Texto para fala."
+    };
+    box.innerHTML = `<div class="diag-linha"><b>Navegador:</b> ${Navegador}</div>
+      <div class="diag-linha"><b>Vozes em português:</b> ${n}${naturais ? ` (${naturais} natura${naturais > 1 ? "is" : "l"})` : ""}</div>
+      <div class="diag-linha"><b>Voz escolhida:</b> ${Voz.voz ? Voz.voz.name : "padrão do sistema"} <span class="qualidade" title="${q.rotulo}">${estrelas}</span></div>
+      <div class="diag-dica">${dicas[Navegador] || "Para voz quase humana, abra no Microsoft Edge."}${n === 0 ? " Nenhuma voz em português foi encontrada: no Windows, vá em Configurações › Hora e idioma › Fala › Adicionar vozes › Português (Brasil)." : ""}</div>`;
+  }
+};
+
+</script>
+<script>
+"use strict";
+// ======================================================
+//  CONFIGURAÇÃO DOS MODOS
+// ======================================================
+const K = 1000;
+const ESCADAS = {
+  m16: { premios: [1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500, 1000].map(x => x * K), blocos: [5, 5, 6], pulos: 3, nome: "Clássico" },
+  m24: { premios: [1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 400, 500, 650, 800, 1000].map(x => x * K), blocos: [7, 8, 9], pulos: 4, nome: "Longo" },
+  m32: { premios: [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200, 250, 300, 400, 500, 600, 750, 900, 1000].map(x => x * K), blocos: [9, 11, 12], pulos: 4, nome: "Maratona" }
+};
+let modo = "m16", E = null, P = [0], fila = [], idx = 0, atual = null, perm = [], marcada = -1, respondida = false;
+let pulos = 3, usouCartas = false, usouUniv = false, usouPlacas = false, eliminadas = [];
+let reservas = {}, acertos = 0, erros = [], errosUltimo = [], nivel = 0, premio = 0, jogoAcabou = false;
+const ehMilhao = () => modo.startsWith("m");
+const total = () => ehMilhao() ? E.premios.length : fila.length;
+// bloco musical da pergunta atual: 0 fácil, 1 média, 2 difícil, 3 final
+function blocoAtual() {
+  if (!ehMilhao()) return atual ? atual.d - 1 : 0;
+  const n = nivel + 1, [a, b] = E.blocos;
+  if (n === E.premios.length) return 3;
+  return n <= a ? 0 : n <= a + b ? 1 : 2;
+}
+const semitom = () => (ehMilhao() ? nivel : idx) % 12;
+function tocarTrilha() { const b = blocoAtual(); Musica.tocar(["facil", "media", "dificil", "final"][b], b === 3 ? 0 : semitom()); }
+
+function preparar() {
+  if (modo === "novas") return embaralhar(PERGUNTAS.filter(p => p.n));
+  if (modo === "extras") return embaralhar(PERGUNTAS.filter(p => p.x));
+  if (modo === "todas") return embaralhar(PERGUNTAS);
+  if (modo === "erros") return embaralhar(errosUltimo.length ? errosUltimo : PERGUNTAS.slice(0, 5));
+  const [a, b, c] = E.blocos, por = d => embaralhar(PERGUNTAS.filter(p => p.d === d));
+  const f = por(1), m = por(2), d = por(3);
+  reservas = { 1: f.slice(a), 2: m.slice(b), 3: d.slice(c) };
+  return [...f.slice(0, a), ...m.slice(0, b), ...d.slice(0, c)];
+}
+
+function mostrarTela(id) { document.querySelectorAll(".tela").forEach(t => t.classList.remove("ativa")); $(id).classList.add("ativa"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+async function iniciar(m) {
+  Musica.iniciar(); Voz.cancelar(); lerExplicacao.id++;
+  modo = m; E = ESCADAS[m] || null; P = E ? [0, ...E.premios] : [0];
+  fila = preparar(); idx = 0; acertos = 0; erros = []; nivel = 0; premio = 0; jogoAcabou = false;
+  pulos = E ? E.pulos : 0; usouCartas = usouUniv = usouPlacas = false;
+  const mil = ehMilhao();
+  $("ajudas").style.visibility = mil ? "visible" : "hidden";
+  $("btnParar").style.display = mil ? "inline-block" : "none";
+  $("listaEscada").style.display = mil ? "flex" : "none";
+  $("progressoBox").style.display = mil ? "none" : "block";
+  $("tituloEscada").textContent = mil ? `Escada do Milhão · ${E.nome}` : ({ novas: "Treino · 40 novas", extras: "Treino · 20 extras", todas: `Treino · ${PERGUNTAS.length} perguntas`, erros: "Treino · seus erros" })[m];
+  atualizarAjudas(); montarEscada(); atualizarMini(); $("escada").classList.remove("aberta");
+  mostrarTela("telaJogo");
+  Musica.tocar("abertura");
+  $("txtPergunta").textContent = ""; $("valorPergunta").textContent = ""; $("alts").innerHTML = ""; $("explica").classList.remove("mostrar"); $("placar3").style.display = "none";
+  const abertura = mil
+    ? `Boa noite, boa noite! Está começando O Milhão do Processo, modo ${E.nome}! Hoje você encara ${porExtenso(E.premios.length)} perguntas sobre Processo de Software. Acertou, sobe na escada. Parou, leva o que tem. Errou, leva a metade. E depois de cada resposta eu explico a matéria e todas as alternativas. Preparado? Então vamos nessa!`
+    : m === "erros" ? `Hora da revanche! Vamos refazer as ${porExtenso(fila.length)} perguntas que você errou. Agora você acerta!`
+    : `Olá, olá! Bem-vindo ao treino do Milhão do Processo! Aqui não tem eliminação: são ${porExtenso(fila.length)} perguntas, e depois de cada uma eu explico a matéria e todas as alternativas. Vamos estudar brincando!`;
+  const sess = ++iniciar.sess;
+  await Voz.falar(abertura);
+  if (sess === iniciar.sess && $("telaJogo").classList.contains("ativa")) mostrarPergunta();
+}
+
+iniciar.sess = 0;
+function montarEscada() {
+  const ol = $("listaEscada"); ol.innerHTML = ""; if (!E) return;
+  const [a, b] = E.blocos;
+  E.premios.forEach((v, i) => {
+    const n = i + 1, li = document.createElement("li"); li.id = "esc" + n;
+    li.innerHTML = `<span class="n">${n}</span><span>${fmt(v)}</span>`;
+    if (n === a + 1 || n === a + b + 1) li.classList.add("marco"); if (n === E.premios.length) li.classList.add("final");
+    ol.appendChild(li);
+  });
+}
+function toggleEscada() { $("escada").classList.toggle("aberta"); }
+function atualizarMini() {
+  const b = $("miniEscada"); if (!b) return;
+  if (!ehMilhao()) { b.style.display = "none"; return; }
+  b.style.display = "";
+  const n = Math.min(nivel + 1, E.premios.length);
+  b.innerHTML = `<span>Pergunta <b>${n}/${E.premios.length}</b></span><span>Tem <b>${fmt(P[nivel])}</b></span><span>Vale <b>${fmt(P[n])}</b> ▾</span>`;
+}
+function atualizarEscada() {
+  atualizarMini();
+  if (!E) return;
+  for (let i = 1; i <= E.premios.length; i++) { const li = $("esc" + i); li.classList.toggle("feita", i <= nivel); li.classList.toggle("atual", i === nivel + 1); }
+  const at = $("esc" + (nivel + 1)); const lista = $("listaEscada"); if (at && lista.scrollHeight > lista.clientHeight) lista.scrollTop = at.offsetTop - lista.clientHeight / 2;
+}
+function atualizarAjudas() {
+  $("qtdPulos").textContent = pulos;
+  $("ajPular").disabled = pulos <= 0 || (E && nivel === E.premios.length - 1);
+  $("ajCartas").disabled = usouCartas; $("ajUniv").disabled = usouUniv; $("ajPlacas").disabled = usouPlacas;
+}
+function travarAjudas(sim) { ["ajPular", "ajCartas", "ajUniv", "ajPlacas", "btnParar"].forEach(id => $(id).disabled = sim); if (!sim) atualizarAjudas(); }
+
+async function mostrarPergunta() {
+  $("escada").classList.remove("aberta");
+  atual = fila[idx]; perm = embaralhar([0, 1, 2, 3]); marcada = -1; respondida = false; eliminadas = [];
+  $("explica").classList.remove("mostrar");
+  $("acoesPergunta").style.display = "flex"; $("placar3").style.display = ehMilhao() ? "flex" : "none";
+  $("txtPergunta").textContent = atual.q;
+  const mil = ehMilhao(), ultima = mil && nivel === E.premios.length - 1;
+  const tag = `<span class="nivel-tag nv${atual.d}">${["", "fácil", "média", "difícil"][atual.d]}</span>`;
+  if (mil) {
+    const valor = P[nivel + 1];
+    $("valorPergunta").innerHTML = ultima ? "PERGUNTA DO MILHÃO" : `Pergunta ${nivel + 1} de ${E.premios.length} · vale ${fmt(valor)}`;
+    $("vErrar").textContent = fmt(ultima ? 0 : Math.floor(P[nivel] / 2));
+    $("vParar").textContent = fmt(P[nivel]);
+    $("vAcertar").textContent = fmt(valor);
+    atualizarEscada(); atualizarAjudas();
+  } else {
+    $("valorPergunta").innerHTML = `Pergunta ${idx + 1} de ${fila.length}${tag}`;
+    $("txtProg").textContent = `Pergunta ${idx + 1} de ${fila.length}`;
+    $("barraProg").style.width = (idx / fila.length * 100) + "%";
+    $("txtAcertos").textContent = `Acertos: ${acertos} · Erros: ${erros.length}`;
+  }
+  const box = $("alts"); box.innerHTML = "";
+  perm.forEach((orig, pos) => {
+    const b = document.createElement("button"); b.className = "alt"; b.id = "alt" + pos;
+    b.innerHTML = `<span class="num">${pos + 1}</span><span>${atual.o[orig]}</span>`;
+    b.onclick = () => escolher(pos);
+    box.appendChild(b);
+  });
+  tocarTrilha();
+  const [a, b] = E ? E.blocos : [0, 0];
+  let intro;
+  if (mil) {
+    const n = nivel + 1;
+    intro = ultima ? "Atenção! Chegou a pergunta do milhão! Se errar, perde tudo. Se acertar, leva um milhão de reais! "
+      : (n === a + 1 ? "Acabaram as fáceis! Agora o bicho vai pegar. " : n === a + b + 1 ? "Entramos nas perguntas difíceis! Concentração total. " : "")
+        + `Pergunta número ${porExtenso(n)}, valendo ${extenso(P[n])}! `;
+  } else intro = `Pergunta ${porExtenso(idx + 1)}! `;
+  const alts = perm.map((o, pos) => `Alternativa ${NUMS[pos]}: ${atual.o[o]}.`).join(" ");
+  await Voz.falar(intro + atual.q + " " + alts);
+  if (!respondida && atual === fila[idx]) $("balao").textContent = "E aí, qual é a resposta? Escolha uma alternativa" + (mil ? " ou use uma ajuda." : ".");
+}
+
+function escolher(pos) {
+  if (respondida || eliminadas.includes(pos)) return;
+  Musica.efeito("marcar");
+  marcada = pos;
+  document.querySelectorAll(".alt").forEach((b, i) => b.classList.toggle("marcada", i === pos));
+  $("txtConfirma").textContent = `Alternativa ${pos + 1}: ${atual.o[perm[pos]]}`;
+  $("mConfirma").classList.add("aberto");
+  Voz.falar(`Você escolheu a alternativa ${NUMS[pos]}, ${atual.o[perm[pos]]}. Resposta final?`);
+  setTimeout(() => $("btnSim").focus(), 50);
+}
+
+async function confirmar(sim) {
+  $("mConfirma").classList.remove("aberto");
+  if (!sim) { marcada = -1; document.querySelectorAll(".alt").forEach(b => b.classList.remove("marcada")); Voz.falar("Tudo bem, pensa com calma!"); return; }
+  respondida = true; travarAjudas(true);
+  document.querySelectorAll(".alt").forEach(b => b.disabled = true);
+  const posCerta = perm.indexOf(atual.c), acertou = marcada === posCerta, k = semitom();
+  Musica.parar(); Musica.efeito("travar", k);
+  Voz.falar("Vamos ver... a resposta certa é...");
+  await espera(700);
+  await Musica.suspense(ehMilhao() && blocoAtual() >= 2 ? 3.2 : 2.4, k);
+  $("alt" + posCerta).classList.remove("marcada"); $("alt" + posCerta).classList.add("certa");
+  if (!acertou) { $("alt" + marcada).classList.remove("marcada"); $("alt" + marcada).classList.add("errada"); }
+  Musica.efeito(acertou ? "certo" : "errado", acertou ? k : 0);
+  if (acertou) acertos++; else erros.push({ p: atual, marcada: atual.o[perm[marcada]] });
+  let fala;
+  if (ehMilhao()) {
+    const N = E.premios.length;
+    if (acertou) {
+      nivel++; premio = P[nivel];
+      const elogios = ["Muito bem!", "Mandou bem!", "Isso aí!", "É isso!", "Show de bola!"];
+      fala = nivel === N ? "CERTA! É um milhão de reais! Você é o campeão do Milhão do Processo!" : `CERTA! ${elogios[nivel % elogios.length]} Você agora tem ${extenso(premio)}!`;
+      atualizarEscada();
+      if (nivel === N) jogoAcabou = true;
+    } else {
+      premio = nivel === N - 1 ? 0 : Math.floor(P[nivel] / 2);
+      fala = `Que pena, errou! A certa era a alternativa ${NUMS[posCerta]}. Você leva ${extenso(premio)}. Mas calma, que agora eu te explico tudo direitinho.`;
+      jogoAcabou = true;
+    }
+  } else {
+    fala = acertou ? "CERTA! Mandou bem!" : `Errou! A certa era a alternativa ${NUMS[posCerta]}. Bora entender o porquê.`;
+    $("txtAcertos").textContent = `Acertos: ${acertos} · Erros: ${erros.length}`;
+  }
+  await Voz.falar(fala);
+  mostrarExplicacao();
+}
+
+function mostrarExplicacao() {
+  $("acoesPergunta").style.display = "none"; $("placar3").style.display = "none";
+  $("aula").innerHTML = `<b>📖 A matéria:</b> ${atual.m}`;
+  const lista = $("listaOps"); lista.innerHTML = "";
+  perm.forEach((orig, pos) => {
+    const ok = orig === atual.c, d = document.createElement("div");
+    d.className = "op " + (ok ? "ok" : "nok"); d.id = "op" + pos;
+    d.innerHTML = `<div class="marca">${ok ? "✔" : "✖"}</div><div><div class="t">${pos + 1}. ${atual.o[orig]}</div><div class="ex">${atual.e[orig]}</div></div>`;
+    lista.appendChild(d);
+  });
+  $("btnProxima").textContent = jogoAcabou || idx + 1 >= fila.length ? "Ver resultado ▶" : "Próxima pergunta ▶";
+  $("explica").classList.add("mostrar");
+  setTimeout(() => $("explica").scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+  Musica.tocar("explica");
+  lerExplicacao();
+}
+
+async function lerExplicacao() {
+  const meu = ++lerExplicacao.id;
+  document.querySelectorAll(".op").forEach(o => o.classList.remove("lendo"));
+  if (!(await Voz.falar("Vamos entender a matéria. " + atual.m))) return;
+  for (let pos = 0; pos < 4; pos++) {
+    if (meu !== lerExplicacao.id) return;
+    document.querySelectorAll(".op").forEach(o => o.classList.remove("lendo"));
+    $("op" + pos).classList.add("lendo");
+    $("op" + pos).scrollIntoView({ behavior: "smooth", block: "nearest" });
+    const orig = perm[pos];
+    if (!(await Voz.falar(`Alternativa ${NUMS[pos]}, ${atual.o[orig]}. ${atual.e[orig]}`))) return;
+  }
+  document.querySelectorAll(".op").forEach(o => o.classList.remove("lendo"));
+  if (meu === lerExplicacao.id) $("balao").textContent = jogoAcabou ? "Clique em Ver resultado para ver como foi." : "Entendeu? Quando quiser, clique em Próxima pergunta.";
+}
+lerExplicacao.id = 0;
+
+function proxima() {
+  Voz.cancelar(); lerExplicacao.id++; Musica.efeito("clique");
+  if (jogoAcabou) return finalizar();
+  idx++;
+  if (idx >= fila.length) return finalizar();
+  if (ehMilhao()) Musica.efeito("subiu", semitom());
+  travarAjudas(false);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  mostrarPergunta();
+}
+
+async function pararJogo() {
+  if (respondida) return;
+  Voz.cancelar(); Musica.efeito("clique");
+  premio = P[nivel]; jogoAcabou = true;
+  respondida = true; travarAjudas(true);
+  document.querySelectorAll(".alt").forEach(b => b.disabled = true);
+  await Voz.falar(`Parou! Você leva ${extenso(premio)}. Mas antes de ir, olha qual era a resposta certa e a explicação.`);
+  $("alt" + perm.indexOf(atual.c)).classList.add("certa");
+  mostrarExplicacao();
+}
+
+function lerRecorde() { try { return JSON.parse(localStorage.getItem("milhao_recorde") || "{}"); } catch (e) { return {}; } }
+function mostrarRecorde() {
+  const r = lerRecorde(), t = ["m16", "m24", "m32"].filter(k => r[k] !== undefined).map(k => `${ESCADAS[k].nome}: ${fmt(r[k])}`);
+  $("recorde").textContent = t.length ? "🏅 Seus recordes · " + t.join(" · ") : "";
+}
+
+async function finalizar() {
+  Voz.cancelar(); mostrarTela("telaFim");
+  const mil = ehMilhao();
+  errosUltimo = erros.map(e => e.p);
+  $("btnTreinarErros").style.display = erros.length ? "inline-block" : "none";
+  let novoRecorde = false;
+  if (mil) {
+    const r = lerRecorde(); if (r[modo] === undefined || premio > r[modo]) { r[modo] = premio; novoRecorde = premio > 0; try { localStorage.setItem("milhao_recorde", JSON.stringify(r)); } catch (e) {} }
+    $("fimTitulo").textContent = premio === 1000000 ? "🏆 R$ 1 MILHÃO!" : fmt(premio);
+    $("fimSub").textContent = `Modo ${E.nome}: ${acertos} acerto(s), chegou à pergunta ${Math.min(nivel + 1, E.premios.length)} de ${E.premios.length}.` + (novoRecorde ? " Novo recorde!" : "");
+  } else {
+    const pct = Math.round(acertos / fila.length * 100);
+    $("fimTitulo").textContent = `${acertos} de ${fila.length} (${pct}%)`;
+    $("fimSub").textContent = pct >= 80 ? "Excelente! Você está pronto para a prova." : pct >= 60 ? "Bom resultado! Treine os erros e jogue de novo." : "Vale revisar o resumo da matéria e treinar os erros.";
+  }
+  const lista = $("fimLista"); lista.innerHTML = "";
+  $("fimRevTitulo").textContent = erros.length ? "Revise o que você errou" : "Nenhum erro! 🎉";
+  erros.forEach(({ p, marcada }) => {
+    const d = document.createElement("div"); d.className = "item";
+    d.innerHTML = `<div><b>${p.q}</b></div><div>❌ Você marcou: ${marcada}</div><div>✅ Certa: ${p.o[p.c]}</div><div style="color:var(--suave);margin-top:4px">📖 ${p.m}</div>`;
+    lista.appendChild(d);
+  });
+  const ganhou = mil ? premio === 1000000 : acertos / fila.length >= 0.8;
+  if (ganhou) { Musica.efeito("vitoria"); confete(); }
+  Musica.tocar("abertura"); mostrarRecorde();
+  const fala = mil
+    ? (premio === 1000000 ? "É campeão! Um milhão de reais! Você domina Processo de Software!" : `Fim de jogo! Você leva ${extenso(premio)}.${novoRecorde ? " É o seu novo recorde!" : ""} ${erros.length ? "Treine o que errou e volte para buscar o milhão!" : ""}`)
+    : `Fim do treino! Você acertou ${porExtenso(acertos)} de ${porExtenso(fila.length)}. ${erros.length ? "Clique em treinar só o que errei para fixar a matéria." : "Gabaritou! Parabéns!"}`;
+  await Voz.falar(fala);
+}
+
+function voltarInicio() { iniciar.sess++; Voz.cancelar(); lerExplicacao.id++; Musica.tocar("abertura"); mostrarRecorde(); mostrarTela("telaInicio"); }
+
+// ======================================================
+//  AJUDAS
+// ======================================================
+async function ajudaPular() {
+  if (respondida || pulos <= 0 || nivel === E.premios.length - 1) return;
+  const res = reservas[atual.d];
+  if (!res || !res.length) { Voz.falar("Ih, acabaram as perguntas reserva desse nível. Não dá para pular agora."); return; }
+  pulos--; Musica.efeito("ajuda");
+  fila[idx] = res.shift(); atualizarAjudas();
+  await Voz.falar("Pulou! Lá vem outra pergunta, do mesmo valor.");
+  mostrarPergunta();
+}
+
+function ajudaCartas() {
+  if (respondida || usouCartas) return;
+  usouCartas = true; atualizarAjudas(); Musica.efeito("ajuda");
+  const valores = embaralhar([{ s: "K", n: 0, nome: "Rei" }, { s: "A", n: 1, nome: "Ás" }, { s: "2", n: 2, nome: "Dois" }, { s: "3", n: 3, nome: "Três" }]);
+  const box = $("cartas"); box.innerHTML = ""; $("resCartas").textContent = ""; $("fecharCartas").style.display = "none";
+  let escolhida = false;
+  valores.forEach(v => {
+    const c = document.createElement("button"); c.className = "carta";
+    c.innerHTML = `<div class="in"><div class="f"></div><div class="v">${v.s}<small>${v.nome}</small></div></div>`;
+    c.onclick = async () => {
+      if (escolhida) return; escolhida = true; c.classList.add("virada"); Musica.efeito("clique");
+      await espera(700);
+      document.querySelectorAll(".carta").forEach(x => x.classList.add("virada"));
+      const posCerta = perm.indexOf(atual.c);
+      embaralhar([0, 1, 2, 3].filter(p => p !== posCerta && !eliminadas.includes(p))).slice(0, v.n)
+        .forEach(p => { eliminadas.push(p); $("alt" + p).classList.add("eliminada"); });
+      const msg = v.n === 0 ? "Rei! Nenhuma alternativa eliminada. Que azar!" : `${v.nome}! Eliminei ${v.n} alternativa${v.n > 1 ? "s" : ""} errada${v.n > 1 ? "s" : ""}.`;
+      $("resCartas").textContent = msg; $("fecharCartas").style.display = "inline-block";
+      Voz.falar(msg);
+    };
+    box.appendChild(c);
+  });
+  $("mCartas").classList.add("aberto");
+  Voz.falar("Escolha uma das quatro cartas!");
+}
+
+function palpite(acerto) {
+  const posCerta = perm.indexOf(atual.c), vivas = [0, 1, 2, 3].filter(p => !eliminadas.includes(p));
+  if (Math.random() < acerto) return posCerta;
+  const outras = vivas.filter(p => p !== posCerta);
+  return outras.length ? outras[Math.floor(Math.random() * outras.length)] : posCerta;
+}
+
+async function ajudaUniv() {
+  if (respondida || usouUniv) return;
+  usouUniv = true; atualizarAjudas(); Musica.efeito("ajuda");
+  const chance = { 1: 0.9, 2: 0.78, 3: 0.65 }[atual.d];
+  const est = [{ av: "👩‍🎓", nome: "Ana", curso: "Ciência da Computação", tom: 1.12 }, { av: "👨‍🎓", nome: "Bruno", curso: "Sistemas de Informação", tom: 0.88 }, { av: "🧑‍🎓", nome: "Carla", curso: "Engenharia de Software", tom: 1.05 }];
+  const frases = ["Tenho certeza: é a", "Acho que é a", "Vou na"];
+  const box = $("univ"); box.innerHTML = ""; const falas = [];
+  est.forEach((e, i) => {
+    const p = palpite(chance), f = frases[Math.floor(Math.random() * 3)];
+    box.innerHTML += `<div><div class="av">${e.av}</div><b>${e.nome}</b><small style="color:var(--suave)">${e.curso}</small><p>${f} <b style="display:inline">${p + 1}</b></p></div>`;
+    falas.push({ t: `${f} ${NUMS[p]}.`, v: Voz.vozExtra(i), tom: e.tom });
+  });
+  $("mUniv").classList.add("aberto");
+  const id = Voz.id;
+  if (!(await Voz.falar("Vamos ouvir os universitários!"))) return;
+  for (const f of falas) { if (!(await Voz.falar(f.t, { voz: f.v, tom: f.tom }))) return; }
+  Voz.falar("Mas lembre: universitário também erra!");
+}
+
+function ajudaPlacas() {
+  if (respondida || usouPlacas) return;
+  usouPlacas = true; atualizarAjudas(); Musica.efeito("ajuda");
+  const posCerta = perm.indexOf(atual.c), forca = { 1: 0.65, 2: 0.5, 3: 0.38 }[atual.d];
+  const votos = [0, 0, 0, 0], vivas = [0, 1, 2, 3].filter(p => !eliminadas.includes(p));
+  for (let i = 0; i < 100; i++) votos[Math.random() < forca ? posCerta : vivas[Math.floor(Math.random() * vivas.length)]]++;
+  const box = $("barras"); box.innerHTML = "";
+  votos.forEach((v, p) => { box.innerHTML += `<div class="b"><em>${v}%</em><i id="bar${p}"></i><span>${p + 1}</span></div>`; });
+  $("mPlacas").classList.add("aberto");
+  setTimeout(() => votos.forEach((v, p) => $("bar" + p).style.height = (v * 1.4) + "px"), 60);
+  const top = votos.indexOf(Math.max(...votos));
+  Voz.falar(`A plateia votou! A mais votada foi a alternativa ${NUMS[top]}, com ${porExtenso(votos[top])} por cento.`);
+}
+
+function fechar(id) { $(id).classList.remove("aberto"); Musica.efeito("clique"); }
+function abrirResumo() { Musica.iniciar(); $("mResumo").classList.add("aberto"); }
+
+// ======================================================
+//  CONTROLES
+// ======================================================
+function alternarMusica() { Musica.ligada = !Musica.ligada; $("btnMusica").textContent = "🎵 " + (Musica.ligada ? "on" : "off"); Musica.abaixar(Musica.abaixada); }
+function alternarVoz() { Voz.ativa = !Voz.ativa; $("btnVoz").textContent = "🎙 " + (Voz.ativa ? "on" : "off"); if (!Voz.ativa) Voz.cancelar(); }
+function pularFala() { Voz.cancelar(); }
+function testarVoz() { Musica.iniciar(); Voz.falar("Olá! Eu sou o Tio Dado, o apresentador do Milhão do Processo. Pergunta número quinze, valendo quinhentos mil reais! Está me ouvindo bem?", { legenda: false }); }
+async function testarMusica() {
+  Musica.iniciar(); const id = ++testarMusica.id;
+  for (const [nome, rot] of [["abertura", "Abertura"], ["facil", "Perguntas fáceis"], ["media", "Perguntas médias"], ["dificil", "Perguntas difíceis"], ["final", "Pergunta do milhão"], ["explica", "Explicação"]]) {
+    if (id !== testarMusica.id || !$("telaInicio").classList.contains("ativa")) return;
+    Musica.tocar(nome, 0); $("diag").dataset.tocando = rot;
+    const b = document.querySelector('[onclick="testarMusica()"]'); if (b) b.textContent = "🎵 " + rot + "…";
+    await espera(nome === "final" ? 7000 : 5000);
+  }
+  Musica.parar(); const b = document.querySelector('[onclick="testarMusica()"]'); if (b) b.textContent = "🎵 Ouvir as trilhas";
+}
+testarMusica.id = 0;
+function confete() {
+  const cores = ["#f6c544", "#2f6bff", "#1fbf6a", "#e0384b", "#fff"];
+  for (let i = 0; i < 140; i++) {
+    const c = document.createElement("div"); c.className = "confete";
+    c.style.left = Math.random() * 100 + "vw"; c.style.background = cores[i % 5];
+    c.style.animationDuration = (2.5 + Math.random() * 2.5) + "s"; c.style.animationDelay = Math.random() * 1.5 + "s";
+    document.body.appendChild(c); setTimeout(() => c.remove(), 7000);
+  }
+}
+$("rngVel").oninput = e => { Voz.vel = +e.target.value; $("txtVel").textContent = (+e.target.value).toFixed(2); };
+$("rngTom").oninput = e => { Voz.tom = +e.target.value; $("txtTom").textContent = (+e.target.value).toFixed(2); };
+$("rngMus").oninput = e => { Musica.setVol(+e.target.value); $("txtMus").textContent = Math.round(e.target.value * 100) + "%"; };
+$("rngSfx").oninput = e => { Musica.setSfx(+e.target.value); $("txtSfx").textContent = Math.round(e.target.value * 100) + "%"; };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && $("mResumo").classList.contains("aberto")) { fechar("mResumo"); return; }
+  if (!$("telaJogo").classList.contains("ativa")) return;
+  if ($("mConfirma").classList.contains("aberto")) { if (e.key === "Enter") { e.preventDefault(); confirmar(true); } if (e.key === "Escape") confirmar(false); return; }
+  if (document.querySelector(".modal.aberto")) { if (e.key === "Escape" || e.key === "Enter") document.querySelectorAll(".modal.aberto").forEach(m => m.classList.remove("aberto")); return; }
+  if (["1", "2", "3", "4"].includes(e.key) && !respondida) escolher(+e.key - 1);
+  if (e.key === " ") { e.preventDefault(); pularFala(); }
+  if (e.key === "Enter" && respondida && $("explica").classList.contains("mostrar")) { e.preventDefault(); proxima(); }
+});
+$("totalPerg").textContent = PERGUNTAS.length;
+Voz.carregar(); Diagnostico.atualizar(); mostrarRecorde();
+</script>
+</body>
+</html>
